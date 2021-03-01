@@ -1,5 +1,3 @@
-// JavaScript source code
-// Personnalisation du canvas
 
 
 var canvas = document.getElementById("canvas");
