@@ -11,7 +11,6 @@ import Position from './Position.js';
 const ORIENTATIONS = ['N', 'E', 'S', 'O'];
 
 export default class Car {
-
     /** @type Position The car position. */
     position;
 
@@ -36,7 +35,7 @@ export default class Car {
     }
 
     // m�thodes pour les mouvements de la voiture
-    
+
     /**
      * Move forward.
      * @param {number} nbCases The amount of cell to move
@@ -47,28 +46,36 @@ export default class Car {
                 if (this.position.y > nbCases) {
                     this.position.y -= nbCases;
                 } else {
-                    console.log("Flash info : un accident est survenu sur le p�riph�rique Nord de Canvas-city. Une candidature est morte sur le coup.");
+                    console.log(
+                        'Flash info : un accident est survenu sur le périphérique Nord de Canvas-city. Une candidature est morte sur le coup.'
+                    );
                 }
                 break;
             case 1:
                 if (this.position.x < TAILLEMAX_X - CANVAS - nbCases) {
                     this.position.x += nbCases;
                 } else {
-                    console.log("Flash info : un accident est survenu sur le p�riph�rique Est de Canvas-city. Une candidature est morte sur le coup.");
+                    console.log(
+                        'Flash info : un accident est survenu sur le périphérique Est de Canvas-city. Une candidature est morte sur le coup.'
+                    );
                 }
                 break;
             case 2:
                 if (this.position.y < TAILLEMAX_Y - CANVAS - nbCases) {
                     this.position.y += nbCases;
                 } else {
-                    console.log("Flash info : un accident est survenu sur le p�riph�rique Sud de Canvas-city. Une candidature est morte sur le coup.");
+                    console.log(
+                        'Flash info : un accident est survenu sur le périphérique Sud de Canvas-city. Une candidature est morte sur le coup.'
+                    );
                 }
                 break;
             case 3:
                 if (this.position.x > nbCases) {
                     this.position.x -= nbCases;
                 } else {
-                    console.log("Flash info : un accident est survenu sur le p�riph�rique Ouest de Canvas-city. Une candidature est morte sur le coup.");
+                    console.log(
+                        'Flash info : un accident est survenu sur le périphérique Ouest de Canvas-city. Une candidature est morte sur le coup.'
+                    );
                 }
                 break;
         }
@@ -96,7 +103,7 @@ export default class Car {
             case 3:
                 this.position.x += nbCases;
                 break;
-            }
+        }
     }
 
     turnLeft() {
