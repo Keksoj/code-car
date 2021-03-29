@@ -1,0 +1,156 @@
+[33mcommit 437176fd24e6c0b661a662f07378b7130640a64a[m[33m ([m[1;36mHEAD -> [m[1;32mcreate-game-class[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/create-game-class[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Merge: 16f770a d33492f
+Author: Emmanuel Bosquet <emmanuel.bosquet@ecole404.fr>
+Date:   Mon Mar 29 13:03:43 2021 +0000
+
+    Merge branch 'create_index.js' into 'main'
+    
+    Create index.js
+    
+    See merge request pierre.mussier1/code-car!6
+
+[33mcommit d33492f5941fc2ed99e56ea74d14473224c5dc53[m[33m ([m[1;31morigin/create_index.js[m[33m)[m
+Author: Emmanuel Bosquet <emmanuel.bosquet@clever-cloud.com>
+Date:   Mon Mar 29 15:02:44 2021 +0200
+
+    created canvas ctx
+
+[33mcommit 1058bea50f4f9c14c32f0598cc88edd7d8e935d1[m
+Author: Emmanuel Bosquet <emmanuel.bosquet@clever-cloud.com>
+Date:   Mon Mar 29 14:57:56 2021 +0200
+
+    moved canvas into main.js
+
+[33mcommit 16f770aaca93cfb6231dbd31ffd13f57bfe70b7d[m
+Merge: f7df29a d91cc1c
+Author: Emmanuel Bosquet <emmanuel.bosquet@ecole404.fr>
+Date:   Mon Mar 29 12:40:44 2021 +0000
+
+    Merge branch 'corriger_readme' into 'main'
+    
+    corrigé une faute
+    
+    See merge request pierre.mussier1/code-car!5
+
+[33mcommit d91cc1c2feb18db9d624ecaff9ed119ad72563ab[m
+Author: Emmanuel Bosquet <emmanuel.bosquet@clever-cloud.com>
+Date:   Mon Mar 29 14:35:14 2021 +0200
+
+    camel case for Posision methods
+
+[33mcommit 45dfdb3f4e18ef08aa87fbf2f35553ba893ef299[m
+Author: Emmanuel Bosquet <emmanuel.bosquet@clever-cloud.com>
+Date:   Mon Mar 29 14:23:55 2021 +0200
+
+    corrigé une faute
+
+[33mcommit f7df29a6b7040151f09850a58f3d09498b4a2359[m
+Author: Emmanuel Bosquet <emmanuel.bosquet@clever-cloud.com>
+Date:   Thu Mar 11 22:45:03 2021 +0100
+
+    formaté le code avec prettier
+
+[33mcommit d39fa26a336b7d3ef182036e84d55299d55ac469[m
+Merge: 5f366d7 71a5e7d
+Author: Pierre Mussier <pierre.mussier1@gmail.com>
+Date:   Thu Mar 4 14:09:07 2021 +0000
+
+    Merge branch 'created-class-car' into 'main'
+    
+    Créé la classe car
+    
+    See merge request pierre.mussier1/code-car!3
+
+[33mcommit 71a5e7d9a93dfccea604b4907e355f9adddd7a91[m
+Author: Alexis Gougaut <alexisgougaut@gmail.com>
+Date:   Wed Mar 3 00:00:07 2021 +0100
+
+    Add gitignore, update the html script
+
+[33mcommit fdde83a503988f784b8c6eb4c9aa75c0c8c7a144[m
+Author: Alexis Gougaut <alexisgougaut@gmail.com>
+Date:   Tue Mar 2 23:46:01 2021 +0100
+
+    Update script type to module because we use import export
+
+[33mcommit a455018457cf84f30b81881786a08b76b81b3f20[m
+Author: Alexis Gougaut <alexisgougaut@gmail.com>
+Date:   Tue Mar 2 23:41:08 2021 +0100
+
+    Update script path
+
+[33mcommit a9103654132fdcb0a6ce6015afb15e86c11c7fe9[m
+Author: Alexis Gougaut <alexisgougaut@gmail.com>
+Date:   Tue Mar 2 23:08:16 2021 +0100
+
+    Comment code (add JSDoc), Fix syntax, add new class for manage the position in 2D space and reoganize a little bit
+
+[33mcommit ad5cadcfb0a0b907c7ff8172f550fbd3685a89fa[m
+Author: Alexis Gougaut <alexisgougaut@gmail.com>
+Date:   Tue Mar 2 23:06:06 2021 +0100
+
+    Comment code (add JSDoc), Fix syntax and add new class for manage the position in 2D space
+
+[33mcommit 2daf3db0d8dfd92fba80df54971d2b186bbe4532[m
+Author: Ripeer <Utilisateur@DESKTOP-J000V85>
+Date:   Tue Mar 2 10:29:30 2021 +0100
+
+    added_prettierrc
+
+[33mcommit 5f366d7e74cd9a138ab9f815cd8a4104ceae8de6[m
+Merge: 9b2f89a d6740d4
+Author: Emmanuel Bosquet <emmanuel.bosquet@ecole404.fr>
+Date:   Tue Mar 2 08:51:51 2021 +0000
+
+    Merge branch 'put_vscode_instructions_in_readme' into 'main'
+    
+    edited the readme
+    
+    See merge request pierre.mussier1/code-car!4
+
+[33mcommit d6740d452473a50bb761dc5b6afe69d8ba06fd42[m
+Author: Emmanuel Bosquet <bjokac@gmail.com>
+Date:   Tue Mar 2 09:49:04 2021 +0100
+
+    edited the readme
+
+[33mcommit edcc0384247f675cfef2ca1dde2101f9071a06d6[m
+Author: Ripeer <Utilisateur@DESKTOP-J000V85>
+Date:   Mon Mar 1 16:58:14 2021 +0100
+
+    second commit
+
+[33mcommit d52df5d008178295e54456d50a18b0c6df99c26b[m
+Author: Ripeer <Utilisateur@DESKTOP-J000V85>
+Date:   Mon Mar 1 16:54:37 2021 +0100
+
+    initial commit
+
+[33mcommit 9b2f89af3b3a2ba17ea69b6c77ae5145a71bc612[m
+Merge: a328603 5b103fd
+Author: 5aitama サイタマ <alexisgougaut@gmail.com>
+Date:   Mon Mar 1 14:56:09 2021 +0000
+
+    Merge branch 'html' into 'main'
+    
+    création branche html
+    
+    See merge request pierre.mussier1/code-car!2
+
+[33mcommit 5b103fd6984e07ba187d2097615c4e7857ef3cd8[m[33m ([m[1;31morigin/html[m[33m)[m
+Author: Ripeer <Utilisateur@DESKTOP-J000V85>
+Date:   Mon Mar 1 15:47:38 2021 +0100
+
+    création branche html
+
+[33mcommit a32860383ee6db1c90f4627ea2c012a657dec60b[m
+Author: Alexis Gougaut <alexisgougaut@gmail.com>
+Date:   Mon Mar 1 15:12:23 2021 +0100
+
+    Update the readme
+
+[33mcommit b4c0c1a11a24b26a58395bb75ac313c81f1ffad4[m
+Author: Alexis Gougaut <alexisgougaut@gmail.com>
+Date:   Mon Mar 1 15:11:04 2021 +0100
+
+    Add readme
