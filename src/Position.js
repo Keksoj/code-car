@@ -20,7 +20,7 @@ export default class Position {
      * Perform an addition with another position or number.
      * @param {Position | number} rhs The position to add from.
      */
-    Add(rhs) {
+    add(rhs) {
         if (rhs instanceof Position) {
             this.x += rhs.x;
             this.y += rhs.y;
@@ -34,7 +34,7 @@ export default class Position {
      * Perform an substraction with another position or number.
      * @param {Position | number} rhs The position to add from.
      */
-    Sub(rhs) {
+    sub(rhs) {
         if (rhs instanceof Position) {
             this.x -= rhs.x;
             this.y -= rhs.y;
