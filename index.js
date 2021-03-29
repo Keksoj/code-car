@@ -1,21 +1,25 @@
-import './src/Car.js';
-import './src/Position.js';
+import Game from './src/Gamejs';
 
-import './src/Map.js';
+//  put those into Game.js
+import Car from './src/Car.js';
+import Position from './src/Position.js';
+import Map from './src/Map.js';
 
 var canvas = document.getElementById('canvas');
 var cellSize = 30; // pixels
 var widthInCells = 10;
 var heightInCells = 10;
-canvas.style.width = cellSize * widthInCells;
-canvas.style.height = cellSize * heightInCells;
+canvas.width = cellSize * widthInCells;
+canvas.height = cellSize * heightInCells;
 canvas.style.border = '1px black solid';
 
 var ctx = canvas.getContext('2d');
 
 console.log(ctx);
-// var game = new Game(ctx);
-var map = new Map(ctx, 10, 10);
-map.draw(cellSize);
 
+// to put into Game.js
+var map = new Map(10, 10);
+map.draw(ctx, cellSize);
+
+// var game = new Game(ctx);
 // game.start();

@@ -1,6 +1,9 @@
+/** draw the cell on the canvas
+ * @property {Number} width
+ * @property {Number} height
+ */
 export default class Map {
-    constructor(ctx, width, height) {
-        this.ctx = ctx;
+    constructor(width, height) {
         this.width = width;
         this.height = height;
     }
@@ -9,20 +12,20 @@ export default class Map {
      * @param {CanvasRenderingContext2D} ctx
      * @param {Number} cellSize
      */
-    draw(cellSize) {
-        this.ctx.save();
-        this.ctx.fillStyle = 'grey';
-        for (x = 0; x < this.width; x++) {
-            for (y = 0; y < this.height; y++) {
-                this.ctx.fillRect(
+    draw(ctx, cellSize) {
+        ctx.save();
+        ctx.fillStyle = 'grey';
+        for (var x = 0; x < this.width; x++) {
+            for (var y = 0; y < this.height; y++) {
+                ctx.fillRect(
                     x * cellSize - cellSize / 2,
                     y * cellSize - cellSize / 2,
-                    cellSize,
-                    cellSize
+                    cellSize - 1,
+                    cellSize - 1
                 );
             }
         }
 
-        this.ctx.restore();
+        ctx.restore();
     }
 }
