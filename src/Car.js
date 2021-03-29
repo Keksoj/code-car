@@ -1,7 +1,10 @@
 // JavaScript source code
 // Cr�ation classe Car
 
+// TODO: Use matrix instead raw orientation etc...?
+
 import Position from './Position.js';
+import Bounds from './Bounds.js';
 
 /**
  * @typedef {'N' | 'E' | 'S' | 'O'} Orientation Represent an orientation (North, East, South, West).
@@ -11,11 +14,18 @@ import Position from './Position.js';
 const ORIENTATIONS = ['N', 'E', 'S', 'O'];
 
 export default class Car {
-    /** @type Position The car position. */
+
+    /** @type Position - The car position. */
     position;
 
-    /** @type number The car orientation. */
+    /** @type number - The car orientation. */
     orientation;
+
+    /** @type Bounds - The car bounds. */
+    bounds;
+
+    /** @type Bounds - The map bounds */
+    mapBounds;
 
     /**
      * Create new Car instance.
@@ -34,7 +44,20 @@ export default class Car {
         return ORIENTATIONS[ORIENTATIONS.indexOf(this.orientation)];
     }
 
-    // m�thodes pour les mouvements de la voiture
+    /**
+     * Set the car orientation.
+     * @param {Orientation | number} orientation The new car orientation.
+     */
+    setOrientation(orientation) {
+        this.orientation = (typeof orientation === 'number') ? orientation : ORIENTATIONS.indexOf(orientation);
+    }
+
+    /**
+     * Called when the car is outside of the map.
+     */
+    onCarIsOutside() {
+        console.log('Flash info : un accident est survenu sur le périphérique Nord de Canvas-city. Une candidature est morte sur le coup.');
+    }
 
     /**
      * Move forward.
@@ -46,36 +69,28 @@ export default class Car {
                 if (this.position.y > nbCases) {
                     this.position.y -= nbCases;
                 } else {
-                    console.log(
-                        'Flash info : un accident est survenu sur le périphérique Nord de Canvas-city. Une candidature est morte sur le coup.'
-                    );
+                    this.onCarIsOutside();
                 }
                 break;
             case 1:
                 if (this.position.x < TAILLEMAX_X - CANVAS - nbCases) {
                     this.position.x += nbCases;
                 } else {
-                    console.log(
-                        'Flash info : un accident est survenu sur le périphérique Est de Canvas-city. Une candidature est morte sur le coup.'
-                    );
+                    this.onCarIsOutside();
                 }
                 break;
             case 2:
                 if (this.position.y < TAILLEMAX_Y - CANVAS - nbCases) {
                     this.position.y += nbCases;
                 } else {
-                    console.log(
-                        'Flash info : un accident est survenu sur le périphérique Sud de Canvas-city. Une candidature est morte sur le coup.'
-                    );
+                    this.onCarIsOutside();
                 }
                 break;
             case 3:
                 if (this.position.x > nbCases) {
                     this.position.x -= nbCases;
                 } else {
-                    console.log(
-                        'Flash info : un accident est survenu sur le périphérique Ouest de Canvas-city. Une candidature est morte sur le coup.'
-                    );
+                    this.onCarIsOutside();
                 }
                 break;
         }
@@ -106,13 +121,19 @@ export default class Car {
         }
     }
 
+    /**
+     * Move the car to his left.
+     */
     turnLeft() {
-        this.orientation += 4 % 4;
+        this.setOrientation((this.orientation + 4) % 4);
         this.moveForward(1);
     }
 
+    /**
+     * Move the car to his right.
+     */
     turnRight() {
-        this.orientation += 1 % 4;
+        this.setOrientation((this.orientation + 1) % 4);
         this.moveForward(1);
     }
 
