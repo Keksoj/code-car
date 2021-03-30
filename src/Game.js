@@ -13,11 +13,10 @@ export default class Game {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.cellSize = 0;
-
         this.score = 0;
 
         // this.start = false;
-        this.end = false;
+        this.isOver = false;
         this.onPause = false;
     }
 

@@ -16,15 +16,22 @@ export default class Map {
         this.width = width;
         this.height = height;
         this.cells = this.generateCells(obstacleRatio);
-        this.cells[15].type = 'bla';
+        // this.cells[15].type = 'obstacle';
     }
 
     generateCells(obstacleRatio) {
         // todo: remplir cells avec des obstacles en proportions à obstacleRatio
         var cells = [];
+
         for (var x = 0; x < this.width; x++) {
             for (var y = 0; y < this.height; y++) {
-                cells.push(new Cell(x, y, 'empty'));
+                const randomNumber = Math.random();
+                console.log(randomNumber);
+                if (randomNumber < obstacleRatio) {
+                    cells.push(new Cell(x, y, 'obstacle'));
+                } else {
+                    cells.push(new Cell(x, y, 'empty'));
+                }
             }
         }
         return cells;
@@ -37,7 +44,7 @@ export default class Map {
     draw(ctx, cellSize) {
         ctx.save();
         ctx.fillStyle = 'grey';
-        console.log(this.cells);
+        // console.log(this.cells);
         for (const cell of this.cells) {
             console.log(cell);
             cell.draw(ctx, cellSize);
