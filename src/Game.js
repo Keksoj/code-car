@@ -4,7 +4,7 @@
 
 
 class Game {
-    constructor(){
+    constructor() {
         this.level = level;
         this.timer = timer;
         this.score = score;
@@ -14,24 +14,23 @@ class Game {
         this.onPause = false;
     }
 
-    startGame () {
+    startGame() {
         level = 0;
         timer = 0;
         score = 0;
 
-        
-        while(this.end==false){
+
+        while (this.end == false) {
             currentLevel = new Level();
             startLevel(currentLevel);
         }
     }
 
-    gameOver () {
+    gameOver() {
+        this.end == true;
 
     }
-    // pauseGame () {
 
-    // }
 }
 
 
