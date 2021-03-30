@@ -26,7 +26,7 @@ export default class Cell {
                 ctx.fillStyle = 'black';
                 break;
             case "startpoint":
-                ctx.fillStyle = 'blue';
+                ctx.fillStyle = 'pink';
                 break;
             case 'endpoint':
                 ctx.fillStyle = 'green';

@@ -12,9 +12,9 @@ export default class Game {
         this.timer = timer;
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
-        this.cellSize = 0;
+        this.cellSize = 30;
         this.score = 0;
-
+        this.car = new Car();
         // this.start = false;
         this.isOver = false;
         this.onPause = false;
@@ -27,7 +27,9 @@ export default class Game {
     start() {
         // this.level = level;
         this.level = new Level(this.canvas);
-        console.log('hello start');
+        this.car.position = this.level.map.carPosition;
+
+        console.log(this.car.orientation);
 
         this.draw(this.ctx);
         this.timer = 0;
@@ -60,6 +62,7 @@ export default class Game {
         ctx.save();
 
         this.level.draw(ctx);
+        this.car.draw(ctx, this.cellSize);
 
         ctx.restore();
     }
