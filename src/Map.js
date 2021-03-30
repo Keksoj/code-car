@@ -1,4 +1,5 @@
 import Cell from './Cell.js';
+import Position from './Position.js';
 
 /** draw the cell on the canvas
  * @property {Number} width
@@ -16,17 +17,37 @@ export default class Map {
         this.width = width;
         this.height = height;
         this.cells = this.generateCells(obstacleRatio);
-        this.cells[15].type = 'bla';
     }
 
     generateCells(obstacleRatio) {
         // todo: remplir cells avec des obstacles en proportions à obstacleRatio
         var cells = [];
+
         for (var x = 0; x < this.width; x++) {
             for (var y = 0; y < this.height; y++) {
-                cells.push(new Cell(x, y, 'empty'));
+                const randomNumber = Math.random();
+                if (randomNumber < obstacleRatio) {
+                    cells.push(new Cell(x, y, 'obstacle'));
+                } else {
+                    cells.push(new Cell(x, y, 'empty'));
+                }
             }
         }
+        const randomIndex = Math.floor(Math.random() * this.width * this.height);
+        cells[randomIndex].type = 'startpoint';
+
+        const carX = randomIndex % this.width;
+        const carY = Math.floor(randomIndex / this.width);
+        this.carPosition = new Position(carX, carY);
+        console.log(this.carPosition);
+
+        var randomIndex2;
+        do {
+            randomIndex2 = Math.floor(Math.random() * this.width * this.height);
+        } while (randomIndex2 == randomIndex);
+
+        cells[randomIndex2].type = 'endpoint';
+
         return cells;
     }
 
@@ -37,13 +58,12 @@ export default class Map {
     draw(ctx, cellSize) {
         ctx.save();
         ctx.fillStyle = 'grey';
-        console.log(this.cells);
+        // console.log(this.cells);
         for (const cell of this.cells) {
-            console.log(cell);
+            // console.log(cell);
             cell.draw(ctx, cellSize);
         }
 
         ctx.restore();
     }
 }
-// (200) [empty × 100, Cell, Cell, Cell, Cell, Cell, Cell, C

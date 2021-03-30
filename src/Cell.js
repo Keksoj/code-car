@@ -1,9 +1,13 @@
+/**
+ * @typedef { 'empty' | 'obstacle' | 'startpoint'| 'endpoint'} CellType Type de cellule
+ */
+
 export default class Cell {
     /**
      *
      * @param {Number} x
      * @param {Number} y
-     * @param {String} type
+     * @param {CellType} type
      */
     constructor(x, y, type) {
         this.x = x;
@@ -13,10 +17,20 @@ export default class Cell {
 
     draw(ctx, cellSize) {
         ctx.save();
-        if (this.type == 'empty') {
-            ctx.fillStyle = 'grey';
-        } else {
-            ctx.fillStyle = 'black';
+
+        switch (this.type) {
+            case 'empty':
+                ctx.fillStyle = 'grey';
+                break;
+            case 'obstacle':
+                ctx.fillStyle = 'black';
+                break;
+            case "startpoint":
+                ctx.fillStyle = 'pink';
+                break;
+            case 'endpoint':
+                ctx.fillStyle = 'green';
+                break;
         }
 
         ctx.fillRect(this.x * cellSize, this.y * cellSize, cellSize - 1, cellSize - 1);

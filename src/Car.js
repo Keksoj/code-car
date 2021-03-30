@@ -14,7 +14,6 @@ import Bounds from './Bounds.js';
 const ORIENTATIONS = ['N', 'E', 'S', 'O'];
 
 export default class Car {
-
     /** @type Position - The car position. */
     position;
 
@@ -49,14 +48,17 @@ export default class Car {
      * @param {Orientation | number} orientation The new car orientation.
      */
     setOrientation(orientation) {
-        this.orientation = (typeof orientation === 'number') ? orientation : ORIENTATIONS.indexOf(orientation);
+        this.orientation =
+            typeof orientation === 'number' ? orientation : ORIENTATIONS.indexOf(orientation);
     }
 
     /**
      * Called when the car is outside of the map.
      */
     onCarIsOutside() {
-        console.log('Flash info : un accident est survenu sur le périphérique Nord de Canvas-city. Une candidature est morte sur le coup.');
+        console.log(
+            'Flash info : un accident est survenu sur le périphérique Nord de Canvas-city. Une candidature est morte sur le coup.'
+        );
     }
 
     /**
@@ -137,5 +139,59 @@ export default class Car {
         this.moveForward(1);
     }
 
-    
+    /**
+     * draw the car on the grid
+     * @param {CanvasRenderingctx2D} ctx
+     */
+    draw(ctx, cellSize) {
+        var triangleWidth = cellSize / 2;
+        var triangleHeight = cellSize / 1.2;
+        var originY = triangleHeight / 2;
+        var originX = triangleWidth / 2;
+
+        ctx.save();
+
+        ctx.fillStyle = 'rgb(0, 0, 0)';
+
+        // ctx.translate(100, 200);
+        ctx.translate(
+            this.position.y * cellSize + cellSize / 2,
+            this.position.x * cellSize + cellSize / 2
+        );
+        ctx.rotate(this.orientation * (Math.PI / 2));
+
+        ctx.beginPath();
+        ctx.fillRect(
+            (triangleWidth / 2) * 0.8 + triangleWidth / 2 - originX - 2,
+            triangleHeight * 0.8 - originY - 5,
+            4,
+            10
+        );
+        ctx.fillRect(
+            (triangleWidth / 2) * 0.2 - originX - 2,
+            triangleHeight * 0.8 - originY - 5,
+            4,
+            10
+        );
+        ctx.fillRect(
+            (triangleWidth / 2) * 0.4 + triangleWidth / 2 - originX - 2,
+            triangleHeight * 0.4 - originY - 5,
+            4,
+            10
+        );
+        ctx.fillRect(
+            (triangleWidth / 2) * 0.6 - originX - 2,
+            triangleHeight * 0.4 - originY - 5,
+            4,
+            10
+        );
+        ctx.fillStyle = 'rgb(255, 0, 0)';
+        ctx.moveTo(triangleWidth / 2 - originX, 0 - originY);
+        ctx.lineTo(triangleWidth - originX, triangleHeight - originY);
+        ctx.lineTo(0 - originX, triangleHeight - originY);
+        ctx.lineTo(triangleWidth / 2 - originX, 0 - originY);
+        ctx.fill();
+        ctx.closePath();
+        ctx.restore();
+    }
 }
