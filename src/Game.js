@@ -14,7 +14,8 @@ export default class Game {
         this.ctx = canvas.getContext('2d');
         this.cellSize = 30;
         this.score = 0;
-        this.car = new Car();
+        this.level = new Level(this.canvas);
+        this.car = new Car(this.level.map.carPosition, "E");
         // this.start = false;
         this.isOver = false;
         this.onPause = false;
@@ -25,10 +26,6 @@ export default class Game {
     }
 
     start() {
-        // this.level = level;
-        this.level = new Level(this.canvas);
-        this.car.position = this.level.map.carPosition;
-
         console.log(this.car.orientation);
 
         this.draw(this.ctx);
