@@ -4,7 +4,7 @@ import Position from './Position.js';
 /** draw the cell on the canvas
  * @property {Number} width
  * @property {Number} height
- * @property {Number[]} cells
+ * @property {Cell[][]} cells
  */
 export default class Map {
     /**
@@ -16,39 +16,44 @@ export default class Map {
     constructor(width, height, obstacleRatio) {
         this.width = width;
         this.height = height;
-        this.cells = this.generateCells(obstacleRatio);
+        this.cells = [];
+        this.generateCells(obstacleRatio);
     }
 
     generateCells(obstacleRatio) {
-        // todo: remplir cells avec des obstacles en proportions à obstacleRatio
-        var cells = [];
-
-        for (var x = 0; x < this.width; x++) {
-            for (var y = 0; y < this.height; y++) {
-                const randomNumber = Math.random();
-                if (randomNumber < obstacleRatio) {
-                    cells.push(new Cell(x, y, 'obstacle'));
+        // fill with empty cells and random obstacles
+        for (var y = 0; y < this.height; y++) {
+            var row = [];
+            for (var x = 0; x < this.width; x++) {
+                if (Math.random() < obstacleRatio) {
+                    row.push(new Cell(x, y, 'obstacle'));
                 } else {
-                    cells.push(new Cell(x, y, 'empty'));
+                    row.push(new Cell(x, y, 'empty'));
                 }
             }
+            this.cells.push(row);
         }
-        const randomIndex = Math.floor(Math.random() * this.width * this.height);
-        cells[randomIndex].type = 'startpoint';
 
-        const carX = randomIndex % this.width;
-        const carY = Math.floor(randomIndex / this.width);
-        this.carPosition = new Position(carX, carY);
+        // start point
+        const [startPointX, startPointY] = this.generateRandomCoordinates();
+        this.cells[startPointX][startPointY].type = 'startpoint';
+
+        // car
+        this.carPosition = new Position(startPointX, startPointY);
         console.log(this.carPosition);
 
-        var randomIndex2;
+        // end point
+        var endPointX, endPointY;
         do {
-            randomIndex2 = Math.floor(Math.random() * this.width * this.height);
-        } while (randomIndex2 == randomIndex);
+            [endPointX, endPointY] = this.generateRandomCoordinates();
+        } while (endPointX == startPointX && endPointY == startPointY);
+        this.cells[endPointY][endPointX].type = 'endpoint';
+    }
 
-        cells[randomIndex2].type = 'endpoint';
-
-        return cells;
+    generateRandomCoordinates() {
+        const x = Math.floor(Math.random() * this.width);
+        const y = Math.floor(Math.random() * this.height);
+        return [x, y];
     }
 
     /** draw the cell on the canvas
@@ -58,12 +63,13 @@ export default class Map {
     draw(ctx, cellSize) {
         ctx.save();
         ctx.fillStyle = 'grey';
-        // console.log(this.cells);
-        for (const cell of this.cells) {
+        console.log(this.cells);
+        for (const row of this.cells) {
+            for (const cell of row) {
+                cell.draw(ctx, cellSize);
+            }
             // console.log(cell);
-            cell.draw(ctx, cellSize);
         }
-
         ctx.restore();
     }
 }
