@@ -155,8 +155,8 @@ export default class Car {
 
         // ctx.translate(100, 200);
         ctx.translate(
-            this.position.y * cellSize + cellSize / 2,
-            this.position.x * cellSize + cellSize / 2
+            this.position.x * cellSize + cellSize / 2,
+            this.position.y * cellSize + cellSize / 2
         );
         ctx.rotate(this.orientation * (Math.PI / 2));
 

@@ -9,13 +9,5 @@ canvas.style.border = '1px black solid';
 var game = new Game(canvas);
 
 // var ctx = canvas.getContext('2d');
-game.helloWorld();
 game.start();
 
-console.log();
-
-// to put into Game.js
-// var map = new Map(10, 10);
-// map.draw(ctx, cellSize);
-
-//

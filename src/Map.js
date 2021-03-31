@@ -18,6 +18,9 @@ export default class Map {
         this.height = height;
         this.cells = [];
         this.generateCells(obstacleRatio);
+        this.startCellX;
+        this.startCellY;
+        this.checkForDrivablePath();
     }
 
     generateCells(obstacleRatio) {
@@ -36,11 +39,13 @@ export default class Map {
 
         // start point
         const [startPointX, startPointY] = this.generateRandomCoordinates();
-        this.cells[startPointX][startPointY].type = 'startpoint';
+        this.cells[startPointY][startPointX].type = 'startpoint';
+        this.startCellX = startPointX;
+        this.startCellY = startPointY;
 
         // car
         this.carPosition = new Position(startPointX, startPointY);
-        console.log(this.carPosition);
+        // console.log(this.carPosition);
 
         // end point
         var endPointX, endPointY;
@@ -48,12 +53,80 @@ export default class Map {
             [endPointX, endPointY] = this.generateRandomCoordinates();
         } while (endPointX == startPointX && endPointY == startPointY);
         this.cells[endPointY][endPointX].type = 'endpoint';
+
+        console.log(this.cells);
     }
 
     generateRandomCoordinates() {
         const x = Math.floor(Math.random() * this.width);
         const y = Math.floor(Math.random() * this.height);
+        // console.log('generated random coordinates: x:', x, 'y:', y);
         return [x, y];
+    }
+
+    /**
+     * checks if a path exists to the end point, returns a bool
+     * @returns {boolean}
+     */
+    checkForDrivablePath() {
+        var exploredCells = [];
+
+        // the first explored cell is the start cell
+        exploredCells.push(this.cells[this.startCellY][this.startCellX]);
+        console.log(exploredCells);
+
+        var drivableNeighbors = [];
+
+        // stop the search after as many tries as there are cells
+        var i = 0;
+        while (i < this.width * this.height) {
+            for (const cell of exploredCells) {
+                console.log('we will find neighbors to:', cell);
+                const neighboringCells = this.findNeighborsToCell(cell);
+                for (const neighbor of neighboringCells) {
+                    // console.log('problem neighbor:', neighbor);
+                    if (neighbor.type == 'empty') {
+                        drivableNeighbors.push(neighbor);
+                    }
+                    if (neighbor.type == 'endpoint') {
+                        return true;
+                    }
+                }
+            }
+            // console.log(exploredCells)
+
+            exploredCells.concat(drivableNeighbors);
+            i++;
+        }
+        return false;
+    }
+
+    /**
+     * for a given cell, find its neighbors without looking beyond the walls
+     * @param {Cell} cell
+     * @returns {Cell[]} list of neighboring cells
+     */
+    findNeighborsToCell(cell) {
+        // console.log(cell);
+        var neighbors = [];
+        // check for the left wall and push EAST neighbor
+        if (cell.x != 0) {
+            neighbors.push(this.cells[cell.y][cell.x - 1]);
+        }
+        // check for the right wall and push WEST neighbor
+        if (cell.x < this.width - 1) {
+            neighbors.push(this.cells[cell.y][cell.x + 1]);
+        }
+        // check for the top wall and push the NORTH neighbor
+        if (cell.y != 0) {
+            neighbors.push(this.cells[cell.y - 1][cell.x]);
+        }
+        // check for the top wall and push the NORTH neighbor
+        if (cell.y < this.height - 1) {
+            neighbors.push(this.cells[cell.y + 1][cell.x]);
+        }
+        // console.debug('neighbors:', neighbors);
+        return neighbors;
     }
 
     /** draw the cell on the canvas
@@ -63,7 +136,7 @@ export default class Map {
     draw(ctx, cellSize) {
         ctx.save();
         ctx.fillStyle = 'grey';
-        console.log(this.cells);
+        // console.log(this.cells);
         for (const row of this.cells) {
             for (const cell of row) {
                 cell.draw(ctx, cellSize);

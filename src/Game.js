@@ -15,7 +15,7 @@ export default class Game {
         this.cellSize = 30;
         this.score = 0;
         this.level = new Level(this.canvas);
-        this.car = new Car(this.level.map.carPosition, "E");
+        this.car = new Car(this.level.map.carPosition, 'E');
         // this.start = false;
         this.isOver = false;
         this.onPause = false;
@@ -26,7 +26,7 @@ export default class Game {
     }
 
     start() {
-        console.log(this.car.orientation);
+        // console.log(this.car.orientation);
 
         this.draw(this.ctx);
         this.timer = 0;
