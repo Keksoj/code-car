@@ -1,6 +1,7 @@
 import Cell from "./Cell.js";
-import Position from "./Position.js";
-import Drawable from "./Drawable.js";
+
+import Drawable from "./Engine/Drawable.js";
+import Number2  from "./Engine/Math/Number2.js";
 
 /**
  * @typedef Size An object that contains size infos.
@@ -27,7 +28,7 @@ export default class Map extends Drawable {
      * The cell position where the player
      * start.
      * 
-     * @type {Position}
+     * @type {Number2}
      */
     startPoint;
 
@@ -35,14 +36,14 @@ export default class Map extends Drawable {
      * The cell position where the player
      * need to reach.
      * 
-     * @type {Position}
+     * @type {Number2}
      */
     endPoint;
 
     /**
      * The amount of cell for each axis.
      * 
-     * @type {Position}
+     * @type {Number2}
      */
     cellAmount;
     
@@ -55,7 +56,7 @@ export default class Map extends Drawable {
     constructor(canvas, settings) {
         super();
 
-        this.cellAmount = new Position(
+        this.cellAmount = new Number2(
             canvas.width  / settings.cellSize,
             canvas.height / settings.cellSize
         );
@@ -68,6 +69,7 @@ export default class Map extends Drawable {
         var counter = 0;
         do {
             this.generateCells();
+            console.log(this.cells);
             console.log(this.checkForDrivablePath());
             counter++;
             console.log(counter);
@@ -78,13 +80,13 @@ export default class Map extends Drawable {
     /**
      * Generate a random 2D coordinates.
      * 
-     * @returns {Position} Random 2D coordinates.
+     * @returns {Number2} Random 2D coordinates.
      */
     generateRandomCoordinates() {
         const x = Math.floor(Math.random() * this.cellAmount.x);
         const y = Math.floor(Math.random() * this.cellAmount.y);
 
-        return new Position(x, y);
+        return new Number2(x, y);
     }
 
     /**
@@ -100,7 +102,7 @@ export default class Map extends Drawable {
 
             for (let y = 0; y < this.cellAmount.y; y++) {
                 const rand = Math.random();
-                col.push(new Cell(x, y, rand < this.settings.obstacleRatio ? 'obstacle' : 'empty'));
+                col.push(new Cell(new Number2(x, y), this.settings.cellSize, rand < this.settings.obstacleRatio ? 'obstacle' : 'empty'));
             }
 
             this.cells.push(col);
@@ -187,23 +189,23 @@ export default class Map extends Drawable {
         var neighbors = [];
 
         // check for the left wall and push EAST neighbor
-        if (cell.x != 0) {
-            neighbors.push(this.cells[cell.x - 1][cell.y]);
+        if (cell.pos.x != 0) {
+            neighbors.push(this.cells[cell.pos.x - 1][cell.pos.y]);
         }
 
         // check for the right wall and push WEST neighbor
-        if (cell.x < this.width - 1) {
-            neighbors.push(this.cells[cell.x + 1][cell.y]);
+        if (cell.pos.x < this.width - 1) {
+            neighbors.push(this.cells[cell.pos.x + 1][cell.pos.y]);
         }
 
         // check for the top wall and push the NORTH neighbor
-        if (cell.y != 0) {
-            neighbors.push(this.cells[cell.x][cell.y - 1]);
+        if (cell.pos.y != 0) {
+            neighbors.push(this.cells[cell.pos.x][cell.pos.y - 1]);
         }
 
-        // check for the top wall and push the NORTH neighbor
-        if (cell.y < this.height - 1) {
-            neighbors.push(this.cells[cell.x][cell.y + 1]);
+        // check for the top wall and push the SOUTH neighbor
+        if (cell.pos.y < this.height - 1) {
+            neighbors.push(this.cells[cell.pos.x][cell.pos.y + 1]);
         }
         
         // console.debug('neighbors:', neighbors);

@@ -1,7 +1,7 @@
-import Car from './Car.js';
-import Map from './Map.js';
-import Level from './Level.js';
-import Drawable from './Drawable.js';
+import Car      from './Car.js';
+import Map      from './Map.js';
+import Level    from './Level.js';
+import Drawable from './Engine/Drawable.js';
 
 export default class Game extends Drawable {
     /**
@@ -60,13 +60,18 @@ export default class Game extends Drawable {
      */
     draw(ctx) {
         
-        this.onGameBeforeRenderCallback(this);
         ctx.save();
-        
+        this.onGameBeforeRenderCallback(this);
+
+
+        ctx.rect(0, 0, this.canvas.width, this.canvas.height);
+        ctx.fill();
+        ctx.fillStyle = "#ffffff";
+
         this.map.draw(ctx);
         this.car.draw(ctx);
 
-        ctx.restore();
         this.onGameAfterRenderCallback(this);
+        ctx.restore();
     }
 }
