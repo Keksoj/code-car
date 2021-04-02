@@ -12,7 +12,7 @@ export default class Level {
         this.widthInCells = 10;
         this.heightInCells = 10;
         this.cellSize = canvas.width / this.widthInCells;
-        this.obstacleRatio = 0.1;
+        this.obstacleRatio = 0.4;
         this.map = new Map(this.widthInCells, this.heightInCells, this.obstacleRatio);
         
     }

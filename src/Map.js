@@ -17,18 +17,31 @@ export default class Map {
         this.width = width;
         this.height = height;
         this.cells = [];
-        this.generateCells(obstacleRatio);
+        this.obstacleRatio = obstacleRatio;
         this.startCellX;
         this.startCellY;
-        this.checkForDrivablePath();
+        this.carPosition;
+        this.generateCheckedMap();
     }
 
-    generateCells(obstacleRatio) {
+    generateCheckedMap() {
+        var counter = 0;
+        do {
+            this.generateCells();
+            console.log(this.checkForDrivablePath());
+            counter++;
+            console.log(counter);
+        } while (!this.checkForDrivablePath());
+        console.log('Found drivable map after', counter, 'tries');
+    }
+
+    generateCells() {
+        this.cells = [];
         // fill with empty cells and random obstacles
         for (var y = 0; y < this.height; y++) {
             var row = [];
             for (var x = 0; x < this.width; x++) {
-                if (Math.random() < obstacleRatio) {
+                if (Math.random() < this.obstacleRatio) {
                     row.push(new Cell(x, y, 'obstacle'));
                 } else {
                     row.push(new Cell(x, y, 'empty'));
@@ -37,24 +50,24 @@ export default class Map {
             this.cells.push(row);
         }
 
-        // start point
-        const [startPointX, startPointY] = this.generateRandomCoordinates();
-        this.cells[startPointY][startPointX].type = 'startpoint';
-        this.startCellX = startPointX;
-        this.startCellY = startPointY;
+        // Coordonnées de départ
+        [this.startCellX, this.startCellY] = this.generateRandomCoordinates();
 
         // car
-        this.carPosition = new Position(startPointX, startPointY);
+        this.carPosition = new Position(this.startCellX, this.startCellY);
         // console.log(this.carPosition);
+
+        // start point
+        this.cells[this.startCellY][this.startCellX].type = 'startpoint';
 
         // end point
         var endPointX, endPointY;
         do {
             [endPointX, endPointY] = this.generateRandomCoordinates();
-        } while (endPointX == startPointX && endPointY == startPointY);
+        } while (endPointX == this.startCellX && endPointY == this.startCellY);
         this.cells[endPointY][endPointX].type = 'endpoint';
 
-        console.log(this.cells);
+        // console.log(this.cells);
     }
 
     generateRandomCoordinates() {
@@ -70,35 +83,52 @@ export default class Map {
      */
     checkForDrivablePath() {
         var exploredCells = [];
+        var pathIsDrivable = false;
 
         // the first explored cell is the start cell
         exploredCells.push(this.cells[this.startCellY][this.startCellX]);
         console.log(exploredCells);
 
-        var drivableNeighbors = [];
-
         // stop the search after as many tries as there are cells
-        var i = 0;
-        while (i < this.width * this.height) {
+        for (var i = 0; i < this.width * this.height; i++) {
+            // créer un tableau temporaire
+            var drivableNeighbors = [];
+
+            // Pour chaque cellule déjà exploré ...
             for (const cell of exploredCells) {
-                console.log('we will find neighbors to:', cell);
+                // console.log('we will find neighbors to:', cell);
+
+                // créer un tableau de cellules voisines
                 const neighboringCells = this.findNeighborsToCell(cell);
+
+                // Pour chaque cellule voisine ...
                 for (const neighbor of neighboringCells) {
-                    // console.log('problem neighbor:', neighbor);
-                    if (neighbor.type == 'empty') {
+                    // si la cellule est accessible, alors l'ajouter au tableau temporaire
+                    if (neighbor.type == 'empty' || neighbor.type == 'endpoint') {
                         drivableNeighbors.push(neighbor);
-                    }
-                    if (neighbor.type == 'endpoint') {
-                        return true;
+
+                        // si la case correspond à la case d'arrivée, la fonction renverra true
+                        if (neighbor.type == 'endpoint') {
+                            pathIsDrivable = true;
+                            console.log('victory!');
+                        }
                     }
                 }
             }
-            // console.log(exploredCells)
-
-            exploredCells.concat(drivableNeighbors);
-            i++;
+            // Pour chaque voisin nouvellement exploré ...
+            for (const drivableNeighbor of drivableNeighbors) {
+                // console.log(drivableNeighbor)
+                // Si le voisin n'est pas déjà contenu dans la table exploredCells...
+                if (!exploredCells.includes(drivableNeighbor)) {
+                    //  ... ajouter la case à la liste des cases explorées
+                    exploredCells.push(drivableNeighbor);
+                }
+            }
+            // exploredCells.concat(drivableNeighbors);
+            // console.log(exploredCells);
         }
-        return false;
+
+        return pathIsDrivable;
     }
 
     /**
