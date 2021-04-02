@@ -18,23 +18,21 @@ export default class Map {
         this.height = height;
         this.cells = [];
         this.obstacleRatio = obstacleRatio;
-        // this.generateCells(obstacleRatio);
         this.startCellX;
         this.startCellY;
         this.carPosition;
-        // this.checkForDrivablePath();
         this.generateCheckedMap();
     }
 
     generateCheckedMap() {
-        var compteur = 0;
+        var counter = 0;
         do {
             this.generateCells();
             console.log(this.checkForDrivablePath());
-            compteur++;
-            console.log(compteur);
-        } while (!this.checkForDrivablePath())
-
+            counter++;
+            console.log(counter);
+        } while (!this.checkForDrivablePath());
+        console.log('Found drivable map after', counter, 'tries');
     }
 
     generateCells() {
@@ -55,14 +53,12 @@ export default class Map {
         // Coordonnées de départ
         [this.startCellX, this.startCellY] = this.generateRandomCoordinates();
 
-
         // car
         this.carPosition = new Position(this.startCellX, this.startCellY);
         // console.log(this.carPosition);
 
         // start point
         this.cells[this.startCellY][this.startCellX].type = 'startpoint';
-
 
         // end point
         var endPointX, endPointY;
@@ -107,23 +103,21 @@ export default class Map {
 
                 // Pour chaque cellule voisine ...
                 for (const neighbor of neighboringCells) {
-                    // console.log("Voisin de la case étudiée : ", neighbor);
                     // si la cellule est accessible, alors l'ajouter au tableau temporaire
-                    if (neighbor.type == 'empty' && neighbor.type == 'endpoint') {
+                    if (neighbor.type == 'empty' || neighbor.type == 'endpoint') {
                         drivableNeighbors.push(neighbor);
-                        // console.log("tableau temporaire : ", drivableNeighbors);
 
-                        // si la case correspond à la case d'arrivée, renvoyer la valeur vraie
+                        // si la case correspond à la case d'arrivée, la fonction renverra true
                         if (neighbor.type == 'endpoint') {
                             pathIsDrivable = true;
+                            console.log('victory!');
                         }
                     }
-
                 }
             }
-            // console.log(exploredCells)
             // Pour chaque voisin nouvellement exploré ...
             for (const drivableNeighbor of drivableNeighbors) {
+                // console.log(drivableNeighbor)
                 // Si le voisin n'est pas déjà contenu dans la table exploredCells...
                 if (!exploredCells.includes(drivableNeighbor)) {
                     //  ... ajouter la case à la liste des cases explorées
