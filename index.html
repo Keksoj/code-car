@@ -8,16 +8,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Code Car</title>
         <script type="module" src="index.js" defer></script>
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <div>
-            <title id="niveau"></title>
-            <span id="timer"></span>
-            <div id="objectif"></div>
-        </div>
+        <article id="leftSide">
+            <div>
+                <h1 id="niveau">Level n°</h1>
+                <span id="timer"></span>
+                <div id="objectif">Objectif :</div>
+            </div>
 
-        <canvas id="canvas"></canvas>
-
-        <div id="textbox"></div>
+            <canvas id="canvas"></canvas>
+        </article>
+        <aside id="textbox">
+            <h1>Instructions à réaliser :</h1>
+            <textarea type="textarea" id="instructions"></textarea>
+        </aside>
     </body>
 </html>
