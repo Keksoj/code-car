@@ -29,6 +29,7 @@ export default class Game {
         // console.log(this.car.orientation);
 
         this.draw(this.ctx);
+
         this.timer = 0;
         this.score = 0;
 
@@ -56,8 +57,9 @@ export default class Game {
     }
 
     draw(ctx) {
+        this.car.turnLeft();
         ctx.save();
-
+        
         this.level.draw(ctx);
         this.car.draw(ctx, this.cellSize);
 
