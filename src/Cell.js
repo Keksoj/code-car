@@ -1,23 +1,29 @@
-import Position from './Position.js';
+import Drawable from './Engine/Drawable.js';
+import Number2 from './Engine/Math/Number2.js'
 
 /**
  * @typedef { 'empty' | 'obstacle' | 'startpoint'| 'endpoint'} CellType Type de cellule
  */
 
-export default class Cell {
+export default class Cell extends Drawable {
     /**
-     *
-     * @param {Number} x
-     * @param {Number} y
-     * @param {CellType} type
+     * Create new cell !
+     * @param {Number2} pos The cell position.
+     * @param {number} size The size of the cell.
+     * @param {CellType} type The type of cell.
      */
-    constructor(x, y, type) {
-        this.x = x;
-        this.y = y;
+    constructor(pos, size, type) {
+        super();
+
+        this.pos  = pos;
         this.type = type;
+        this.size = size;
     }
 
-    draw(ctx, cellSize) {
+    /**
+     * @param {CanvasRenderingContext2D} ctx The context.
+     */
+    draw(ctx) {
         ctx.save();
 
         switch (this.type) {
@@ -35,8 +41,7 @@ export default class Cell {
                 break;
         }
 
-        ctx.fillRect(this.x * cellSize, this.y * cellSize, cellSize - 1, cellSize - 1);
-
+        ctx.fillRect(this.pos.x * this.size, this.pos.y * this.size, this.size - 1, this.size - 1);
         ctx.restore();
     }
 }

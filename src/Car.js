@@ -3,12 +3,10 @@
 
 // TODO: Use matrix instead raw orientation etc...?
 
-import Position from './Position.js';
 import Map from './Map.js';
-import Drawable from './Drawable.js';
-import Number2 from './Number2.js';
-import Transform from './Transform.js';
-import Mat3x3 from './Mat3x3.js';
+
+import Drawable from './Engine/Drawable.js';
+import Number2  from './Engine/Math/Number2.js';
 
 /**
  * @typedef {'N' | 'E' | 'S' | 'O'} Orientation Represent an orientation (North, East, South, West).
@@ -18,10 +16,10 @@ import Mat3x3 from './Mat3x3.js';
 const ORIENTATIONS = ['N', 'E', 'S', 'O'];
 
 export default class Car extends Drawable {
-    /** @type Position - The car position. */
+    /** @type {Number2} - The car position. */
     position;
 
-    /** @type number - The car orientation. */
+    /** @type {number} - The car orientation. */
     orientation;
 
     /** 
@@ -33,7 +31,7 @@ export default class Car extends Drawable {
 
     /**
      * Create new Car instance.
-     * @param {Position} position The car position.
+     * @param {Number2} position The car position.
      * @param {Orientation} orientation The car orientation.
      * @param {Map} map The map where the car is.
      */
