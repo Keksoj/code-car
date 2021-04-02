@@ -1,42 +1,48 @@
 import Car from './Car.js';
-import Position from './Position.js';
 import Map from './Map.js';
 import Level from './Level.js';
+import Drawable from './Drawable.js';
 
-export default class Game {
+export default class Game extends Drawable {
     /**
-     * @param {HTMLCanvasElement} canvas
+     * Create new Game instance !
+     * @param {HTMLCanvasElement} canvas The canvas where the game need to be draw.
      * @param {Level} level
+     * @param {((game: Game) => void)=} onGameStart Callback called after the game initialization.
+     * @param {((game: Game) => void)=} onGameUpdate Callback called once per frame.
+     * @param {((game: Game) => void)=} onGameBeforeRender Callaback called once per frame before the render step.
+     * @param {((game: Game) => void)=} onGameAfterRender Callback called once per frame after the render step.
      */
-    constructor(canvas, mapLevel = 0) {
-        this.timer = timer;
-        this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
-        this.cellSize = 30;
-        this.score = 0;
-        this.level = new Level(this.canvas);
-        this.car = new Car(this.level.map.carPosition, 'E');
-        // this.start = false;
-        this.isOver = false;
-        this.onPause = false;
+    constructor(canvas, onGameStart, onGameUpdate, onGameBeforeRender, onGameAfterRender) {
+        super();
+
+        this.canvas     = canvas;
+        this.ctx        = canvas.getContext('2d');
+        this.cellSize   = 30;
+        this.map        = new Map(canvas, { obstacleRatio: 0.3, cellSize: this.cellSize });
+        this.car        = new Car(this.map.startPoint, 'N', this.map);
+        this.lastTime   = 0;
+        this.time       = 0;
+        
+        const defaultCallback = (_) => { /* ... */ }
+
+        this.onGameStartCallback        = onGameStart ? onGameStart : defaultCallback
+        this.onGameUpdateCallback       = onGameUpdate ? onGameUpdate : defaultCallback
+        this.onGameBeforeRenderCallback = onGameBeforeRender ? onGameBeforeRender : defaultCallback
+        this.onGameAfterRenderCallback  = onGameAfterRender ? onGameAfterRender : defaultCallback
+
+        this.onGameStartCallback(this);
+        this.gameLoop(0);
     }
 
-    helloWorld() {
-        console.log('hello world');
-    }
+    gameLoop(time) {
+        this.time = time;
 
-    start() {
-        // console.log(this.car.orientation);
-
+        this.onGameUpdateCallback(this);
         this.draw(this.ctx);
 
-        this.timer = 0;
-        this.score = 0;
-
-        // if (this.end == false) {
-        //     this.currentLevel = new Level();
-        //     startLevel(currentLevel);
-        // }
+        this.lastTime = time;
+        requestAnimationFrame((time) => this.gameLoop(time));
     }
 
     /**
@@ -48,21 +54,19 @@ export default class Game {
         canvas.height = this.level.heightInCells;
     }
 
-    levelUp() {
-        this.level.levelUp();
-    }
-
-    gameOver() {
-        this.end == true;
-    }
-
+    /**
+     * 
+     * @param {CanvasRenderingContext2D} ctx The context.
+     */
     draw(ctx) {
-        this.car.turnLeft();
+        
+        this.onGameBeforeRenderCallback(this);
         ctx.save();
         
-        this.level.draw(ctx);
-        this.car.draw(ctx, this.cellSize);
+        this.map.draw(ctx);
+        this.car.draw(ctx);
 
         ctx.restore();
+        this.onGameAfterRenderCallback(this);
     }
 }

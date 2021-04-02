@@ -1,26 +1,66 @@
-import Cell from './Cell.js';
-import Position from './Position.js';
+import Cell from "./Cell.js";
+import Position from "./Position.js";
+import Drawable from "./Drawable.js";
 
-/** draw the cell on the canvas
- * @property {Number} width
- * @property {Number} height
- * @property {Cell[][]} cells
+/**
+ * @typedef Size An object that contains size infos.
+ * @property {number} width The width value.
+ * @property {number} height The height value.
  */
-export default class Map {
+
+/**
+ * @typedef MapSettings
+ * @property {number} obstacleRatio Probability to have obstacles.
+ * @property {number} cellSize Size of cells in the map.
+ */
+
+export default class Map extends Drawable {
     /**
-     *
-     * @param {Number} width
-     * @param {Number} height
-     * @param {Number} obstacleRatio nombre entre 0 et 1
+     * Array that contains all cells in
+     * the map.
+     * 
+     * @type {Cell[][]}
      */
-    constructor(width, height, obstacleRatio) {
-        this.width = width;
-        this.height = height;
-        this.cells = [];
-        this.obstacleRatio = obstacleRatio;
-        this.startCellX;
-        this.startCellY;
-        this.carPosition;
+    cells = [];
+
+    /**
+     * The cell position where the player
+     * start.
+     * 
+     * @type {Position}
+     */
+    startPoint;
+
+    /**
+     * The cell position where the player
+     * need to reach.
+     * 
+     * @type {Position}
+     */
+    endPoint;
+
+    /**
+     * The amount of cell for each axis.
+     * 
+     * @type {Position}
+     */
+    cellAmount;
+    
+
+    /**
+     * Create new Map
+     * @param {HTMLCanvasElement} canvas The canvas where the map must be draw.
+     * @param {MapSettings} settings The map settings.
+     */
+    constructor(canvas, settings) {
+        super();
+
+        this.cellAmount = new Position(
+            canvas.width  / settings.cellSize,
+            canvas.height / settings.cellSize
+        );
+
+        this.settings = settings;
         this.generateCheckedMap();
     }
 
@@ -35,66 +75,71 @@ export default class Map {
         console.log('Found drivable map after', counter, 'tries');
     }
 
-    generateCells() {
-        this.cells = [];
-        // fill with empty cells and random obstacles
-        for (var y = 0; y < this.height; y++) {
-            var row = [];
-            for (var x = 0; x < this.width; x++) {
-                if (Math.random() < this.obstacleRatio) {
-                    row.push(new Cell(x, y, 'obstacle'));
-                } else {
-                    row.push(new Cell(x, y, 'empty'));
-                }
-            }
-            this.cells.push(row);
-        }
+    /**
+     * Generate a random 2D coordinates.
+     * 
+     * @returns {Position} Random 2D coordinates.
+     */
+    generateRandomCoordinates() {
+        const x = Math.floor(Math.random() * this.cellAmount.x);
+        const y = Math.floor(Math.random() * this.cellAmount.y);
 
-        // Coordonnées de départ
-        [this.startCellX, this.startCellY] = this.generateRandomCoordinates();
-
-        // car
-        this.carPosition = new Position(this.startCellX, this.startCellY);
-        // console.log(this.carPosition);
-
-        // start point
-        this.cells[this.startCellY][this.startCellX].type = 'startpoint';
-
-        // end point
-        var endPointX, endPointY;
-        do {
-            [endPointX, endPointY] = this.generateRandomCoordinates();
-        } while (endPointX == this.startCellX && endPointY == this.startCellY);
-        this.cells[endPointY][endPointX].type = 'endpoint';
-
-        // console.log(this.cells);
+        return new Position(x, y);
     }
 
-    generateRandomCoordinates() {
-        const x = Math.floor(Math.random() * this.width);
-        const y = Math.floor(Math.random() * this.height);
-        // console.log('generated random coordinates: x:', x, 'y:', y);
-        return [x, y];
+    /**
+     * Generate random walls, start point and end point.
+     */
+    generateCells() {
+
+        this.cells = [];
+
+        // fill with empty cells and random obstacles
+        for (let x = 0; x < this.cellAmount.x; x++) {
+            const col = [];
+
+            for (let y = 0; y < this.cellAmount.y; y++) {
+                const rand = Math.random();
+                col.push(new Cell(x, y, rand < this.settings.obstacleRatio ? 'obstacle' : 'empty'));
+            }
+
+            this.cells.push(col);
+        }
+
+        const startCoords = this.generateRandomCoordinates();
+
+        this.cells[startCoords.x][startCoords.y].type = 'startpoint';
+        this.startPoint = startCoords;
+
+        let endCoords;
+        do {
+            endCoords = this.generateRandomCoordinates();
+        } while (endCoords.x === startCoords.x && endCoords.y === startCoords.y);
+
+        this.cells[endCoords.x][endCoords.y].type = 'endpoint';
     }
 
     /**
      * checks if a path exists to the end point, returns a bool
      * @returns {boolean}
      */
-    checkForDrivablePath() {
+     checkForDrivablePath() {
         var exploredCells = [];
         var pathIsDrivable = false;
 
         // the first explored cell is the start cell
-        exploredCells.push(this.cells[this.startCellY][this.startCellX]);
+        exploredCells.push(this.cells[this.startPoint.x][this.startPoint.y]);
         console.log(exploredCells);
 
+        const totalAmount = this.cellAmount.x * this.cellAmount.y;
+
         // stop the search after as many tries as there are cells
-        for (var i = 0; i < this.width * this.height; i++) {
+        for (var i = 0; i < totalAmount; i++) {
+
             // créer un tableau temporaire
             var drivableNeighbors = [];
 
-            // Pour chaque cellule déjà exploré ...
+            // Pour chaque cellule déjà explorée...
             for (const cell of exploredCells) {
                 // console.log('we will find neighbors to:', cell);
 
@@ -115,6 +160,7 @@ export default class Map {
                     }
                 }
             }
+
             // Pour chaque voisin nouvellement exploré ...
             for (const drivableNeighbor of drivableNeighbors) {
                 // console.log(drivableNeighbor)
@@ -136,43 +182,41 @@ export default class Map {
      * @param {Cell} cell
      * @returns {Cell[]} list of neighboring cells
      */
-    findNeighborsToCell(cell) {
+     findNeighborsToCell(cell) {
         // console.log(cell);
         var neighbors = [];
+
         // check for the left wall and push EAST neighbor
         if (cell.x != 0) {
-            neighbors.push(this.cells[cell.y][cell.x - 1]);
+            neighbors.push(this.cells[cell.x - 1][cell.y]);
         }
+
         // check for the right wall and push WEST neighbor
         if (cell.x < this.width - 1) {
-            neighbors.push(this.cells[cell.y][cell.x + 1]);
+            neighbors.push(this.cells[cell.x + 1][cell.y]);
         }
+
         // check for the top wall and push the NORTH neighbor
         if (cell.y != 0) {
-            neighbors.push(this.cells[cell.y - 1][cell.x]);
+            neighbors.push(this.cells[cell.x][cell.y - 1]);
         }
+
         // check for the top wall and push the NORTH neighbor
         if (cell.y < this.height - 1) {
-            neighbors.push(this.cells[cell.y + 1][cell.x]);
+            neighbors.push(this.cells[cell.x][cell.y + 1]);
         }
+        
         // console.debug('neighbors:', neighbors);
         return neighbors;
     }
 
-    /** draw the cell on the canvas
-     * @param {CanvasRenderingContext2D} ctx
-     * @param {Number} cellSize
+    /**
+     * 
+     * @param {CanvasRenderingContext2D} ctx The context.
      */
-    draw(ctx, cellSize) {
-        ctx.save();
-        ctx.fillStyle = 'grey';
-        // console.log(this.cells);
-        for (const row of this.cells) {
-            for (const cell of row) {
-                cell.draw(ctx, cellSize);
-            }
-            // console.log(cell);
-        }
-        ctx.restore();
+    draw(ctx) {
+        for(let i = 0; i < this.cells.length; i++)
+            for(let j = 0; j < this.cells[i].length; j++)
+                this.cells[i][j].draw(ctx, this.settings.cellSize);
     }
 }
