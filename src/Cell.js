@@ -1,3 +1,5 @@
+import Position from './Position.js';
+
 /**
  * @typedef { 'empty' | 'obstacle' | 'startpoint'| 'endpoint'} CellType Type de cellule
  */
@@ -25,7 +27,7 @@ export default class Cell {
             case 'obstacle':
                 ctx.fillStyle = 'black';
                 break;
-            case "startpoint":
+            case 'startpoint':
                 ctx.fillStyle = 'pink';
                 break;
             case 'endpoint':

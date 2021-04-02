@@ -3,10 +3,9 @@
 
 // TODO: Use matrix instead raw orientation etc...?
 
-import Position from './Position.js';
-import Bounds from './Bounds.js';
-import Map from './Clean/_Map.js';
-import Drawable from './Clean/_Drawable.js';
+import Position from '../Position.js';
+import Map from './_Map.js';
+import Drawable from './_Drawable.js';
 
 /**
  * @typedef {'N' | 'E' | 'S' | 'O'} Orientation Represent an orientation (North, East, South, West).
@@ -73,6 +72,7 @@ export default class Car extends Drawable {
      * @param {number} nbCases The amount of cell to move
      */
     moveForward(nbCases) {
+        
         switch (this.orientation) {
             case 0:
                 if (this.position.y - nbCases >= 0)
@@ -97,31 +97,6 @@ export default class Car extends Drawable {
                     this.position.x -= nbCases;
                 else
                     this.onCarIsOutside();
-                break;
-        }
-    }
-
-    /**
-     * Move backward
-     * @param {number} nbCases The amount of cell to move
-     */
-    moveBack(nbCases) {
-        switch (this.orientation) {
-            case 0:
-                this.position.y += nbCases;
-                break;
-            case 1:
-                if (this.position.x > nbCases) {
-                    this.position.x -= nbCases;
-                }
-                break;
-            case 2:
-                if (this.position.y > nbCases) {
-                    this.position.y -= nbCases;
-                }
-                break;
-            case 3:
-                this.position.x += nbCases;
                 break;
         }
     }
@@ -158,8 +133,8 @@ export default class Car extends Drawable {
         ctx.fillStyle = 'rgb(0, 0, 0)';
 
         ctx.translate(
-            this.position.x * cellSize + cellSize / 2,
-            this.position.y * cellSize + cellSize / 2
+            this.position.x * this.map.settings.cellSize + this.map.settings.cellSize / 2,
+            this.position.y * this.map.settings.cellSize + this.map.settings.cellSize / 2
         );
 
         ctx.rotate(this.orientation * (Math.PI / 2));
