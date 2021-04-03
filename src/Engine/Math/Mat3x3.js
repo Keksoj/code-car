@@ -55,6 +55,23 @@ export default class Mat3x3 {
     }
 
     /**
+     *  Extract the position
+     *  in the matrix.
+     */
+    GetPosition() {
+        return new Number2(this.values[2], this.values[5]);
+    }
+
+
+    /**
+     *  Extract the scale
+     *  in the matrix.
+     */
+    GetScale() {
+        return new Number2(this.values[0], this.values[4]);
+    }
+
+    /**
      * Get the identity matrix.
      * @returns The identity matrix.
      */
