@@ -3,6 +3,7 @@ import Transform  from './src/Engine/Transform.js';
 import Mat3x3     from './src/Engine/Math/Mat3x3.js';
 import Number2    from './src/Engine/Math/Number2.js';
 import CCContext  from './src/Engine/Core/CCContext.js';
+import Parser from './src/Jacklang/Parser.js';
 
 var canvas = document.getElementById('canvas');
 var cellSize = 10; // pixels
@@ -11,34 +12,43 @@ canvas.width  = 300;
 canvas.height = 300;
 canvas.style.border = '1px black solid';
 
-// const ccctx = new CCContext(canvas);
-// const ctx = ccctx.getRawContext();
-
-// function update() {
-//     ctx.clear(ctx.COLOR_BUFFER_BIT | ctx.DEPTH_BUFFER_BIT);
-//     ctx.clearColor(0.1, 0.1, 0.1, 1);
-
-//     requestAnimationFrame(update);
-// }
-
-// update();
-
 /** @type {CanvasRenderingContext2D} */
 const ctx = canvas.getContext('2d');
 
 const game = new Game(canvas, onGameStart, onGameUpdate, onGameBeforeRender, onGameAfterRender);
 
+// test the parser
+const str = `avance assumenda qui eligendi. Iusto quis ratione dolorem consequatur 
+veniam reprehenderit. Ut sit sed laboriosam. 
+Aut et dolores omnis consequatur eaque.`;
+console.log(str);
+
+console.log(Parser.parse(str));
+
 /**
  * Called after the game was initialized.
  * @param {Game} game The game.
  */
-function onGameStart(game) { /* do some things... */ }
+function onGameStart(game) {
+    document.onkeydown = (ev) => {
+        switch (ev.key) {
+            case 'w':
+                game.car.moveForward(1);
+                break;
+            case 's':
+                game.car.moveForward(-1);
+                break;
+        }
+    };
+}
 
 /**
  * Called each frame.
  * @param {Game} game The game.
  */
-function onGameUpdate(game) { /* do some things... */ }
+function onGameUpdate(game) {
+    /* do some things... */
+}
 
 /**
  * Called each frame before rendering the game.
@@ -46,12 +56,13 @@ function onGameUpdate(game) { /* do some things... */ }
  */
 function onGameBeforeRender(game) { /* do some things... */ }
 
+
 /**
  * Called each frame after rendering the game.
  * @param {Game} game The game.
  */
 function onGameAfterRender(game) {
-    SaitamaThingsWith(game);
+    // SaitamaThingsWith(game);
 }
 
 /**
