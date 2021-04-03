@@ -34,7 +34,6 @@ export default class Parser {
             const words = lines[l].split(' ');
             const parsedLine = [];
             for (let w = 0; w < words.length; w++) {
-                if ()
                 if (!Parser.carCommands.includes(words[w])) {
                     return new ParserError(l + 1, w + 1, 'Ce mot est inconnu');
                 }
