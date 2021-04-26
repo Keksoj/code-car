@@ -11,7 +11,7 @@ Le joueur doit écrire des instructions dans un langage de programmation *ad hoc
 pour diriger une petite voiture qui tourne, avance, et recule de case en case,
 jusqu'à atteindre la case d'arrivée.
 
-## L'équipe
+## L'équipe
 
 - [Alexis](https://github.com/5aitama) dit **Saitama**
 - [Pierre](https://pierremussier.github.io/)
