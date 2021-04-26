@@ -1,7 +1,7 @@
-import Cell from "./Cell.js";
+import Cell from './Cell.js';
 
-import Drawable from "./Engine/Drawable.js";
-import Number2  from "./Engine/Math/Number2.js";
+import Drawable from './Engine/Drawable.js';
+import Number2 from './Engine/Math/Number2.js';
 
 /**
  * @typedef Size An object that contains size infos.
@@ -19,7 +19,7 @@ export default class Map extends Drawable {
     /**
      * Array that contains all cells in
      * the map.
-     * 
+     *
      * @type {Cell[][]}
      */
     cells = [];
@@ -27,7 +27,7 @@ export default class Map extends Drawable {
     /**
      * The cell position where the player
      * start.
-     * 
+     *
      * @type {Number2}
      */
     startPoint;
@@ -35,18 +35,17 @@ export default class Map extends Drawable {
     /**
      * The cell position where the player
      * need to reach.
-     * 
+     *
      * @type {Number2}
      */
     endPoint;
 
     /**
      * The amount of cell for each axis.
-     * 
+     *
      * @type {Number2}
      */
     cellAmount;
-    
 
     /**
      * Create new Map
@@ -57,7 +56,7 @@ export default class Map extends Drawable {
         super();
 
         this.cellAmount = new Number2(
-            canvas.width  / settings.cellSize,
+            canvas.width / settings.cellSize,
             canvas.height / settings.cellSize
         );
 
@@ -69,17 +68,17 @@ export default class Map extends Drawable {
         var counter = 0;
         do {
             this.generateCells();
-            console.log(this.cells);
-            console.log(this.checkForDrivablePath());
+            // console.log(this.cells);
+            // console.log(this.checkForDrivablePath());
             counter++;
-            console.log(counter);
+            // console.log(counter);
         } while (!this.checkForDrivablePath());
-        console.log('Found drivable map after', counter, 'tries');
+        // console.log('Found drivable map after', counter, 'tries');
     }
 
     /**
      * Generate a random 2D coordinates.
-     * 
+     *
      * @returns {Number2} Random 2D coordinates.
      */
     generateRandomCoordinates() {
@@ -93,7 +92,6 @@ export default class Map extends Drawable {
      * Generate random walls, start point and end point.
      */
     generateCells() {
-
         this.cells = [];
 
         // fill with empty cells and random obstacles
@@ -102,7 +100,13 @@ export default class Map extends Drawable {
 
             for (let y = 0; y < this.cellAmount.y; y++) {
                 const rand = Math.random();
-                col.push(new Cell(new Number2(x, y), this.settings.cellSize, rand < this.settings.obstacleRatio ? 'obstacle' : 'empty'));
+                col.push(
+                    new Cell(
+                        new Number2(x, y),
+                        this.settings.cellSize,
+                        rand < this.settings.obstacleRatio ? 'obstacle' : 'empty'
+                    )
+                );
             }
 
             this.cells.push(col);
@@ -125,19 +129,18 @@ export default class Map extends Drawable {
      * checks if a path exists to the end point, returns a bool
      * @returns {boolean}
      */
-     checkForDrivablePath() {
+    checkForDrivablePath() {
         var exploredCells = [];
         var pathIsDrivable = false;
 
         // the first explored cell is the start cell
         exploredCells.push(this.cells[this.startPoint.x][this.startPoint.y]);
-        console.log(exploredCells);
+        // console.log(exploredCells);
 
         const totalAmount = this.cellAmount.x * this.cellAmount.y;
 
         // stop the search after as many tries as there are cells
         for (var i = 0; i < totalAmount; i++) {
-
             // créer un tableau temporaire
             var drivableNeighbors = [];
 
@@ -184,7 +187,7 @@ export default class Map extends Drawable {
      * @param {Cell} cell
      * @returns {Cell[]} list of neighboring cells
      */
-     findNeighborsToCell(cell) {
+    findNeighborsToCell(cell) {
         // console.log(cell);
         var neighbors = [];
 
@@ -207,18 +210,18 @@ export default class Map extends Drawable {
         if (cell.pos.y < this.height - 1) {
             neighbors.push(this.cells[cell.pos.x][cell.pos.y + 1]);
         }
-        
+
         // console.debug('neighbors:', neighbors);
         return neighbors;
     }
 
     /**
-     * 
+     *
      * @param {CanvasRenderingContext2D} ctx The context.
      */
     draw(ctx) {
-        for(let i = 0; i < this.cells.length; i++)
-            for(let j = 0; j < this.cells[i].length; j++)
+        for (let i = 0; i < this.cells.length; i++)
+            for (let j = 0; j < this.cells[i].length; j++)
                 this.cells[i][j].draw(ctx, this.settings.cellSize);
     }
 }

@@ -1,4 +1,5 @@
-import Car from "../Car.js";
+import Car from '../Car.js';
+import instructionSet from './jacklang.js';
 
 export class Cursor {
     /** @type {string} */
@@ -18,12 +19,16 @@ export class Cursor {
     /**
      * Retrieve the cursor index.
      */
-    get index() { return this.mIndex }
+    get index() {
+        return this.mIndex;
+    }
 
     /**
      * Set the cursor index.
      */
-    set index(value) { this.mIndex = value }
+    set index(value) {
+        this.mIndex = value;
+    }
 
     /**
      * Move the cursor
@@ -35,10 +40,10 @@ export class Cursor {
     }
 
     /**
-     * 
+     *
      * @param {string} separator The separator zeubi
      */
-    moveToNextWord(separator = " ") {
+    moveToNextWord(separator = ' ') {
         let endIndex = this.index;
         for (; this.mStr[endIndex] != separator && endIndex < this.mStr.length; endIndex++);
         this.index = endIndex + 1;
@@ -47,60 +52,69 @@ export class Cursor {
     }
 
     /**
-     * 
+     *
      * @param {string} separator The separator
      */
-    getValueFromNextSeparator(separator = " ") {
+    getValueFromNextSeparator(separator = ' ') {
         let endIndex = this.index;
         for (; this.mStr[endIndex] != separator && endIndex < this.mStr.length; endIndex++);
-        return endIndex > this.mStr.length ? "" : this.mStr.slice(this.index, endIndex);
+        return endIndex > this.mStr.length ? '' : this.mStr.slice(this.index, endIndex);
     }
 
     /**
-     * 
+     *
      */
     getValueFrom() {
         return this.mStr[this.index];
     }
 
     /**
-     * 
+     *
      * @param {number} size The range size.
-     * @returns 
+     * @returns
      */
     getValuesFrom(size) {
         return this.mStr.slice(this.index, this.index + size);
     }
 
     /**
-     * 
-     * @param {{[key: string]: (car: Car) => void}} instructionSet The values to check
+     *
+     * @param {{[key: string]: () => void}} instructionSet The values to check
      * @returns {(car: Car) => void}
      */
-    cmpFromNextSeparator(instructionSet, separator = " ") {
+    cmpFromNextSeparator(instructionSet, separator = ' ') {
         const value = this.getValueFromNextSeparator(separator);
         for (const key in instructionSet) {
-            if (key === value)
-                return instructionSet[key];
+            if (key === value) return instructionSet[key];
         }
     }
 }
 
 export default class ParserV2 {
+    constructor() {
+        this.instructionSet = instructionSet;
+
+        // this.parse = this.parse(stringToParse);
+    }
 
     /**
      * Just parse a text into `JLLI` (**J**_acklang_ **L**_ow_ **L**_evel_ **I**_nstruction_).
      * @param {string} str Text to parse.
+     * @param {}
+     * @return {[string]} normal english instructions
      */
-    static parse(str) {
+    parse(str) {
         const cursor = new Cursor(str);
 
+        const instructions = [];
         do {
-            let instruction = cursor.cmpFromNextSeparator(instructionSet);
+            let instruction = cursor.cmpFromNextSeparator(this.instructionSet);
+            if (instruction) {
+                instructions.push(instruction);
+            }
 
             // Do some things with the instruction...
-
-        } while (cursor.moveToNextWord().getValueFromNextSeparator() !== "");
+        } while (cursor.moveToNextWord().getValueFromNextSeparator() !== '');
+        return instructions;
     }
-
 }
