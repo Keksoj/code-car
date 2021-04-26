@@ -1,29 +1,16 @@
-import Game       from './src/Game.js';
-import Transform  from './src/Engine/Transform.js';
-import Mat3x3     from './src/Engine/Math/Mat3x3.js';
-import Number2    from './src/Engine/Math/Number2.js';
-import CCContext  from './src/Engine/Core/CCContext.js';
-import Parser from './src/Jacklang/Parser.js';
+import Game from './src/Game.js';
+import Transform from './src/Engine/Transform.js';
+import Mat3x3 from './src/Engine/Math/Mat3x3.js';
+import Number2 from './src/Engine/Math/Number2.js';
 
 var canvas = document.getElementById('canvas');
 var cellSize = 10; // pixels
 
-canvas.width  = 300;
+canvas.width = 300;
 canvas.height = 300;
 canvas.style.border = '1px black solid';
 
-/** @type {CanvasRenderingContext2D} */
-const ctx = canvas.getContext('2d');
-
-const game = new Game(canvas, onGameStart, onGameUpdate, onGameBeforeRender, onGameAfterRender);
-
-// test the parser
-const str = `avance assumenda qui eligendi. Iusto quis ratione dolorem consequatur 
-veniam reprehenderit. Ut sit sed laboriosam. 
-Aut et dolores omnis consequatur eaque.`;
-console.log(str);
-
-console.log(Parser.parse(str));
+new Game(canvas, onGameStart, onGameUpdate, onGameBeforeRender, onGameAfterRender);
 
 /**
  * Called after the game was initialized.
@@ -77,15 +64,15 @@ function SaitamaThingsWith(game) {
 
     const t0 = new Transform();
     t0.setRotation(game.time / 1000);
-    
+
     t0.setScale(new Number2(50));
     const t = Mat3x3.translationMatrix(new Number2(canvas.width / 2, canvas.height / 2));
 
     const cocos = Math.cos(Math.PI / 4);
 
     const triangleVertices = [
-        new Number2( 0    ,  1    ),
-        new Number2( cocos, -cocos),
+        new Number2(0, 1),
+        new Number2(cocos, -cocos),
         new Number2(-cocos, -cocos),
     ];
 
@@ -96,7 +83,7 @@ function SaitamaThingsWith(game) {
     const c = Mat3x3.mul(t, Mat3x3.mul(trs, triangleVertices[2]));
 
     // console.log();
-    
+
     ctx.moveTo(a.x, a.y);
     ctx.lineTo(b.x, b.y);
     ctx.lineTo(c.x, c.y);
