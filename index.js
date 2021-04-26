@@ -2,6 +2,7 @@ import Game from './src/Game.js';
 import Transform from './src/Engine/Transform.js';
 import Mat3x3 from './src/Engine/Math/Mat3x3.js';
 import Number2 from './src/Engine/Math/Number2.js';
+import ParserV2 from './src/Jacklang/Parserv2.js';
 
 var canvas = document.getElementById('canvas');
 var cellSize = 10; // pixels
@@ -10,7 +11,13 @@ canvas.width = 300;
 canvas.height = 300;
 canvas.style.border = '1px black solid';
 
-new Game(canvas, onGameStart, onGameUpdate, onGameBeforeRender, onGameAfterRender);
+var game = new Game(canvas, onGameStart, onGameUpdate, onGameBeforeRender, onGameAfterRender);
+
+var userInstructionString = 'avance avance gauche recule';
+var parser = new ParserV2();
+
+var executableInstructions = parser.parse(userInstructionString);
+console.log(executableInstructions);
 
 /**
  * Called after the game was initialized.
@@ -41,8 +48,9 @@ function onGameUpdate(game) {
  * Called each frame before rendering the game.
  * @param {Game} game The game.
  */
-function onGameBeforeRender(game) { /* do some things... */ }
-
+function onGameBeforeRender(game) {
+    /* do some things... */
+}
 
 /**
  * Called each frame after rendering the game.
