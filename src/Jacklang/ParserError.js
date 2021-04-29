@@ -5,6 +5,6 @@ import Error from '../Engine/Error.js';
  */
 export default class ParserError extends Error {
     constructor(lineNumber, wordIndex, message) {
-        super('Erreur ligne ' + lineNumber + ', au mot ' + wordIndex + ': ' + message);
+        super('JackLangError: Erreur ligne ' + lineNumber + ', au mot ' + wordIndex + ': ' + message);
     }
 }
