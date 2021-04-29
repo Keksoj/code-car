@@ -1,5 +1,5 @@
 // JavaScript source code
-// Cr�ation classe Car
+// Creation classe Car
 
 // TODO: Use matrix instead raw orientation etc...?
 
@@ -93,39 +93,66 @@ export default class Car extends Drawable {
     }
 
     /**
-     * Called when the car is outside of the map.
+     * @param {number} driveDistance The amount of cell to move
      */
-    onCarIsOutside() {
-        console.log(
-            'Flash info : un accident est survenu sur le périphérique Nord de Canvas-city. Une candidature est morte sur le coup.'
-        );
+    moveForward(driveDistance) {
+        const futurePosition = this.computeFuturePosition(driveDistance);
+        console.log(this.position, futurePosition);
+        if (this.collisionOccurs(futurePosition)) {
+            console.log('woops collision');
+        } else {
+            this.position = futurePosition;
+        }
     }
 
     /**
      * Move forward.
-     * @param {number} nbCases The amount of cell to move
+     * @param {number} driveDistance The amount of cell to move
+     * @returns {Number2} futurePosition
      */
-    moveForward(nbCases) {
+    computeFuturePosition(driveDistance) {
+        var futurePosition = this.position;
         switch (this.orientation) {
             case 0:
-                if (this.position.y - nbCases >= 0) this.position.y -= nbCases;
-                else this.onCarIsOutside();
+                futurePosition.y = this.position.y - driveDistance;
                 break;
             case 1:
-                if (this.position.x + nbCases < this.map.cellAmount.x) this.position.x += nbCases;
-                else this.onCarIsOutside();
+                futurePosition.x = this.position.x + driveDistance;
                 break;
             case 2:
-                if (this.position.y + nbCases < this.map.cellAmount.y) this.position.y += nbCases;
-                else this.onCarIsOutside();
+                futurePosition.y = this.position.y + driveDistance;
                 break;
             case 3:
-                if (this.position.x - nbCases >= 0) this.position.x -= nbCases;
-                else this.onCarIsOutside();
+                futurePosition.x = this.position.x - driveDistance;
                 break;
         }
+        return futurePosition;
     }
 
+    /**
+     * detect collisions
+     * @param {Number2} the future position to check collisions for
+     * @returns {boolean}
+     */
+    collisionOccurs(futurePosition) {
+        if (
+            futurePosition.x > this.map.cellAmount.x ||
+            futurePosition.x < 0 ||
+            futurePosition.y > this.map.cellAmount.y ||
+            futurePosition.y < 0
+        ) {
+            console.log(
+                'Flash info : un accident est survenu sur le périphérique Nord de Canvas-city. Une candidature est morte sur le coup.'
+            );
+            return true;
+        }
+        const goalCell = this.map.cells[futurePosition.x][futurePosition.y];
+        if (goalCell.type == 'obstacle') {
+            console.log('You hit a block dumbass');
+            return true;
+        }
+        return false;
+    }
     /**
      * Move the car to its left.
      */
