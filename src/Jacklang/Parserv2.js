@@ -18,6 +18,47 @@ export default class ParserV2 {
         
         const words = str.split(' ');
         const instructions = [];
+        const separator = " ";
+        
+        let buffer = "";
+        let separators = [' ', '\n'];
+        
+        let index_of_char = 0;
+        let index_of_line = 0;
+
+        for(let i = 0; i <= str.length; i++) {
+
+            if(str[i] === 'à') {
+                let separator_cout = 0;
+
+                // Move to the next separator
+                for(; i < str.length && separator_cout < 2; i++, index_of_char++) {
+                    if(separators.indexOf(str[i]) > -1) separator_cout++;
+                    buffer += str[i];
+                }
+            }
+
+            if(separators.indexOf(str[i]) > -1 || i === str.length) {
+
+                if(str[i] === '\n') index_of_line++;
+
+                // If the buffer is empty we
+                // pass to the next character...
+                if(buffer === '') continue;
+
+                // Show the buffer content...
+                // console.log(`buffer: ${buffer}`);
+                
+                // Reset the buffer...
+                buffer = "";
+
+                // Go to the next character...
+                continue;
+            }
+
+            buffer += str[i];
+            index_of_char++;
+        }
 
         for(let i = 0; i < words.length; i++) {
             if(this.instructionSet[words[i]]) {
@@ -30,7 +71,6 @@ export default class ParserV2 {
                     instructions.push(concatenated_inst);
                 } else {
                     throw new ParserError(0, i, `Le mot qui suit "${words[i + 1]}" n'est pas reconnu!`).message;
-
                 }
                 i++;
             }
@@ -42,8 +82,8 @@ export default class ParserV2 {
             english_instructions.push(this.instructionSet[inst])
         }
 
-        console.log(instructions);
-        console.log(english_instructions);
+        // console.log(instructions);
+        // console.log(english_instructions);
 
         return english_instructions;
         // const cursor = new Cursor(str);
