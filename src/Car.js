@@ -6,7 +6,8 @@
 import Map from './Map.js';
 
 import Drawable from './Engine/Drawable.js';
-import Number2  from './Engine/Math/Number2.js';
+import Number2 from './Engine/Math/Number2.js';
+import instructionSet from './Jacklang/jacklang.js';
 
 /**
  * @typedef {'N' | 'E' | 'S' | 'O'} Orientation Represent an orientation (North, East, South, West).
@@ -22,10 +23,10 @@ export default class Car extends Drawable {
     /** @type {number} - The car orientation. */
     orientation;
 
-    /** 
+    /**
      * The map where the car is.
-     * 
-     * @type {Map} 
+     *
+     * @type {Map}
      */
     map;
 
@@ -41,6 +42,38 @@ export default class Car extends Drawable {
         this.position = position;
         this.orientation = ORIENTATIONS.indexOf(orientation);
         this.map = map;
+        this.instructions = [];
+    }
+
+    /**
+     *
+     * @param {[String]} instructions a list of english commands
+     */
+    setInstructions(instructions) {
+        this.instructions = instructions;
+    }
+
+    /**
+     * Execute the instruction queue
+     */
+    executeOneInstruction() {
+        if (this.instructions.length > 0) {
+            console.log(this.instructions[0]);
+            switch (this.instructions.pop()) {
+                case 'forward':
+                    this.moveForward(1);
+                    break;
+                case 'backward':
+                    this.moveForward(-1);
+                    break;
+                case 'left':
+                    this.turnLeft();
+                    break;
+                case 'right':
+                    this.turnRight();
+                    break;
+            }
+        }
     }
 
     /**
@@ -73,61 +106,49 @@ export default class Car extends Drawable {
      * @param {number} nbCases The amount of cell to move
      */
     moveForward(nbCases) {
-        
         switch (this.orientation) {
             case 0:
-                if (this.position.y - nbCases >= 0)
-                    this.position.y -= nbCases;
-                else
-                    this.onCarIsOutside();
+                if (this.position.y - nbCases >= 0) this.position.y -= nbCases;
+                else this.onCarIsOutside();
                 break;
             case 1:
-                if (this.position.x + nbCases < this.map.cellAmount.x)
-                    this.position.x += nbCases;
-                else
-                    this.onCarIsOutside();
+                if (this.position.x + nbCases < this.map.cellAmount.x) this.position.x += nbCases;
+                else this.onCarIsOutside();
                 break;
             case 2:
-                if (this.position.y + nbCases < this.map.cellAmount.y)
-                    this.position.y += nbCases;
-                else
-                    this.onCarIsOutside();
+                if (this.position.y + nbCases < this.map.cellAmount.y) this.position.y += nbCases;
+                else this.onCarIsOutside();
                 break;
             case 3:
-                if (this.position.x - nbCases >= 0)
-                    this.position.x -= nbCases;
-                else
-                    this.onCarIsOutside();
+                if (this.position.x - nbCases >= 0) this.position.x -= nbCases;
+                else this.onCarIsOutside();
                 break;
         }
     }
 
     /**
-     * Move the car to his left.
+     * Move the car to its left.
      */
     turnLeft() {
-        this.setOrientation((this.orientation + 4) % 4);
-        this.moveForward(1);
+        this.setOrientation((this.orientation + 3) % 4);
     }
 
     /**
-     * Move the car to his right.
+     * Move the car to its right.
      */
     turnRight() {
         this.setOrientation((this.orientation + 1) % 4);
-        this.moveForward(1);
     }
 
     /**
      * @param {CanvasRenderingContext2D} ctx The context.
      */
     draw(ctx) {
-        
-        var triangleWidth  = this.map.settings.cellSize / 2;
+        var triangleWidth = this.map.settings.cellSize / 2;
         var triangleHeight = this.map.settings.cellSize / 1.2;
 
         var originY = triangleHeight / 2;
-        var originX = triangleWidth  / 2;
+        var originX = triangleWidth / 2;
 
         ctx.save();
 
@@ -141,7 +162,7 @@ export default class Car extends Drawable {
         ctx.rotate(this.orientation * (Math.PI / 2));
 
         ctx.beginPath();
-        
+
         ctx.fillRect(
             (triangleWidth / 2) * 0.8 + triangleWidth / 2 - originX - 2,
             triangleHeight * 0.8 - originY - 5,

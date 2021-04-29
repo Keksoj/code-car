@@ -14,43 +14,36 @@ canvas.style.border = '1px black solid';
 
 var game = new Game(canvas, onGameStart, onGameUpdate, onGameBeforeRender, onGameAfterRender);
 
-var userInstructionString = 'avance avance gauche recule';
-var parser = new ParserV2();
-
-var executableInstructions = parser.parse(userInstructionString);
-console.log(executableInstructions);
-
-var textInput = document.getElementById('text');
-textInput.onsubmit = (event) => {
-    event.preventDefault();
-    const instructions = event.target.instructions.value;
-    var executable = parser.parse(instructions);
-    console.log(executable);
-};
-
 /**
  * Called after the game was initialized.
  * @param {Game} game The game.
  */
 function onGameStart(game) {
-    document.onkeydown = (ev) => {
-        switch (ev.key) {
-            case 'w':
-                game.car.moveForward(1);
-                break;
-            case 's':
-                game.car.moveForward(-1);
-                break;
-        }
+    var parser = new ParserV2();
+    var textInput = document.getElementById('text');
+    textInput.onsubmit = (event) => {
+        event.preventDefault();
+        const rawInstructions = event.target.instructions.value;
+        var executableInstructions = parser.parse(rawInstructions);
+        console.log(executableInstructions);
+        game.car.setInstructions(executableInstructions);
     };
 }
 
+var time_total = 0;
 /**
  * Called each frame.
  * @param {Game} game The game.
  */
 function onGameUpdate(game) {
     /* do some things... */
+    time_total += game.time - game.lastTime;
+    if (time_total / 1000 > 1) {
+        // console.log(game.time - game.lastTime);
+        // console.log(game.car.instructions);
+        time_total = 0;
+        game.car.executeOneInstruction();
+    }
 }
 
 /**
