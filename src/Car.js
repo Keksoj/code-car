@@ -50,7 +50,7 @@ export default class Car extends Drawable {
      * @param {[String]} instructions a list of english commands
      */
     setInstructions(instructions) {
-        this.instructions = instructions;
+        this.instructions = instructions.reverse();
     }
 
     /**

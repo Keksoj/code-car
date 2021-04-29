@@ -43,6 +43,7 @@ function onGameUpdate(game) {
         // console.log(game.car.instructions);
         time_total = 0;
         game.car.executeOneInstruction();
+        game.checkWin();
     }
 }
 
@@ -60,6 +61,25 @@ function onGameBeforeRender(game) {
  */
 function onGameAfterRender(game) {
     // SaitamaThingsWith(game);
+
+    if (game.isWon) {
+        game.ctx.save();
+        game.ctx.fillStyle = '#00ff00';
+        game.ctx.rect(
+            2 * cellSize,
+            2 * cellSize,
+            (game.map.cellAmount.x - 2) * cellSize,
+            (game.map.cellAmount.y - 2) * cellSize
+        );
+        game.ctx.font = '30px monospace';
+        game.ctx.textAlign = 'center';
+        game.ctx.fillStyle = 'white';
+        game.ctx.fillText('Congratulations', canvas.width / 2, canvas.height / 2 - 40);
+        game.ctx.font = '15px monospace';
+        game.ctx.fillText('You won', canvas.width / 2, canvas.height / 2);
+        game.ctx.fill();
+        game.ctx.restore();
+    }
 }
 
 /**

@@ -1,6 +1,6 @@
-import Car      from './Car.js';
-import Map      from './Map.js';
-import Level    from './Level.js';
+import Car from './Car.js';
+import Map from './Map.js';
+import Level from './Level.js';
 import Drawable from './Engine/Drawable.js';
 
 export default class Game extends Drawable {
@@ -16,20 +16,23 @@ export default class Game extends Drawable {
     constructor(canvas, onGameStart, onGameUpdate, onGameBeforeRender, onGameAfterRender) {
         super();
 
-        this.canvas     = canvas;
-        this.ctx        = canvas.getContext('2d');
-        this.cellSize   = 30;
-        this.map        = new Map(canvas, { obstacleRatio: 0.3, cellSize: this.cellSize });
-        this.car        = new Car(this.map.startPoint, 'N', this.map);
-        this.lastTime   = 0;
-        this.time       = 0;
-        
-        const defaultCallback = (_) => { /* ... */ }
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.cellSize = 30;
+        this.map = new Map(canvas, { obstacleRatio: 0.3, cellSize: this.cellSize });
+        this.car = new Car(this.map.startPoint, 'N', this.map);
+        this.lastTime = 0;
+        this.time = 0;
+        this.isWon = false;
 
-        this.onGameStartCallback        = onGameStart ? onGameStart : defaultCallback
-        this.onGameUpdateCallback       = onGameUpdate ? onGameUpdate : defaultCallback
-        this.onGameBeforeRenderCallback = onGameBeforeRender ? onGameBeforeRender : defaultCallback
-        this.onGameAfterRenderCallback  = onGameAfterRender ? onGameAfterRender : defaultCallback
+        const defaultCallback = (_) => {
+            /* ... */
+        };
+
+        this.onGameStartCallback = onGameStart ? onGameStart : defaultCallback;
+        this.onGameUpdateCallback = onGameUpdate ? onGameUpdate : defaultCallback;
+        this.onGameBeforeRenderCallback = onGameBeforeRender ? onGameBeforeRender : defaultCallback;
+        this.onGameAfterRenderCallback = onGameAfterRender ? onGameAfterRender : defaultCallback;
 
         this.onGameStartCallback(this);
         this.gameLoop(0);
@@ -46,6 +49,18 @@ export default class Game extends Drawable {
     }
 
     /**
+     * Checks for a win
+     */
+    checkWin() {
+        const cell = this.map.cells[this.car.position.x][this.car.position.y];
+        console.log(cell);
+        if (cell.type == 'endpoint') {
+            console.log('congrats');
+            this.isWon = true;
+        }
+    }
+
+    /**
      *
      * @param {HTMLCanvasElement} canvas
      */
@@ -55,18 +70,16 @@ export default class Game extends Drawable {
     }
 
     /**
-     * 
+     *
      * @param {CanvasRenderingContext2D} ctx The context.
      */
     draw(ctx) {
-        
         ctx.save();
         this.onGameBeforeRenderCallback(this);
 
-
         ctx.rect(0, 0, this.canvas.width, this.canvas.height);
         ctx.fill();
-        ctx.fillStyle = "#ffffff";
+        ctx.fillStyle = '#ffffff';
 
         this.map.draw(ctx);
         this.car.draw(ctx);
