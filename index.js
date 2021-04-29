@@ -3,6 +3,7 @@ import Transform from './src/Engine/Transform.js';
 import Mat3x3 from './src/Engine/Math/Mat3x3.js';
 import Number2 from './src/Engine/Math/Number2.js';
 import ParserV2 from './src/Jacklang/Parserv2.js';
+import instructionSet from './src/Jacklang/jacklang.js';
 
 var canvas = document.getElementById('canvas');
 var cellSize = 10; // pixels
@@ -18,6 +19,14 @@ var parser = new ParserV2();
 
 var executableInstructions = parser.parse(userInstructionString);
 console.log(executableInstructions);
+
+var textInput = document.getElementById('text');
+textInput.onsubmit = (event) => {
+    event.preventDefault();
+    const instructions = event.target.instructions.value;
+    var executable = parser.parse(instructions);
+    console.log(executable);
+};
 
 /**
  * Called after the game was initialized.
