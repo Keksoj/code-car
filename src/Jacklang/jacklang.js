@@ -1,12 +1,11 @@
 // import Game from '../Game.js';
 
-const frenchCarCommands = ['avance', 'recule', 'tourne', 'à gauche', 'à droite'];
-const normalCarCommands = ['forward', 'backward', 'turn', 'left', 'right'];
+const frenchCarCommands = ['avance', 'recule', 'à gauche', 'à droite'];
+const normalCarCommands = ['forward', 'backward', 'left', 'right'];
 
 const instructionSet = {
     avance: 'forward',
     recule: 'backward',
-    tourne: 'turn',
     'à gauche': 'left',
     'à droite': 'right',
 };
