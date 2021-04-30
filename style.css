@@ -7,9 +7,14 @@ body {
     justify-content: space-around;
     align-items: center; /* horizontal alignment */
     align-content: space-around; /* vertical alignment */
+    flex-wrap: wrap;
 }
 .map {
     width: 400px;
+}
+
+#textform {
+    display: grid;
 }
 
 .textbox {
@@ -18,6 +23,7 @@ body {
     align-items: center;
     margin: 1.5em;
     padding: 1.5em;
+    display: grid;
     /* width: 40%; */
 }
 #instructions {

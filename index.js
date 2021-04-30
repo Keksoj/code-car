@@ -20,7 +20,7 @@ var game = new Game(canvas, onGameStart, onGameUpdate, onGameBeforeRender, onGam
  */
 function onGameStart(game) {
     var parser = new ParserV2();
-    var textInput = document.getElementById('text');
+    var textInput = document.getElementById('textform');
     textInput.onsubmit = (event) => {
         event.preventDefault();
         const rawInstructions = event.target.instructions.value;
