@@ -54,10 +54,14 @@ export default class Game extends Drawable {
     checkWin() {
         const cell = this.map.cells[this.car.position.x][this.car.position.y];
         console.log(cell);
-        if (cell.type == 'endpoint') {
+        if (cell.type === 'endpoint') {
             console.log('congrats');
             this.isWon = true;
         }
+    }
+
+    gameOver() {
+        
     }
 
     /**
@@ -83,6 +87,24 @@ export default class Game extends Drawable {
 
         this.map.draw(ctx);
         this.car.draw(ctx);
+
+        if (this.isWon) {
+            this.ctx.fillStyle = '#00ff00';
+            this.ctx.fillRect(
+                2 * this.cellSize,
+                2 * this.cellSize,
+                (this.map.cellAmount.x - 4) * this.cellSize,
+                (this.map.cellAmount.y - 4) * this.cellSize
+            );
+            this.ctx.fill();
+            this.ctx.font = '30px monospace';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillStyle = 'white';
+            this.ctx.fillText('Congratulations', this.canvas.width / 2, this.canvas.height / 2 - 40);
+            this.ctx.font = '15px monospace';
+            this.ctx.fillText('You won', this.canvas.width / 2, this.canvas.height / 2);
+            this.ctx.fill();
+        }
 
         this.onGameAfterRenderCallback(this);
         ctx.restore();
