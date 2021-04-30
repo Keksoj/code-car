@@ -3,7 +3,6 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="utf-8" />
-
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Code Car</title>
@@ -12,16 +11,21 @@
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <h1 id="niveau">Code-car</h1>
+        <nav>
+            <div class="col">
+                <h1 id="niveau">CODE - CAR</h1>
+            </div>
+        </nav>
         <div class="flex-container">
-            <div class="map">
+            <div class="card col">
+                <h2 class="cardHeader"> Mots croisés </h2>
                 <canvas id="canvas"></canvas>
             </div>
-            <div class="textbox">
-                <h2>Instructions :</h2>
+            <div class="card col">
+                <h2 class="cardHeader">Instructions :</h2>
                 <form id="textform">
                     <textarea type="textarea" id="instructions"></textarea>
-                    <button type="submit">Envoyer</button>
+                    <button id="envoyerText" type="submit">Envoyer</button>
                 </form>
             </div>
         </div>
