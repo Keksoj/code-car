@@ -4,8 +4,6 @@ import ParserError from './ParserError.js';
 export default class ParserV2 {
     constructor() {
         this.instructionSet = instructionSet;
-
-        // this.parse = this.parse(stringToParse);
     }
 
     /**
@@ -82,21 +80,6 @@ export default class ParserV2 {
             english_instructions.push(this.instructionSet[inst])
         }
 
-        // console.log(instructions);
-        // console.log(english_instructions);
-
         return english_instructions;
-        // const cursor = new Cursor(str);
-
-        // const instructions = [];
-        // do {
-        //     let instruction = cursor.cmpFromNextSeparator(this.instructionSet);
-        //     if (instruction) {
-        //         instructions.push(instruction);
-        //     }
-
-        //     // Do some things with the instruction...
-        // } while (cursor.moveToNextWord().getValueFromNextSeparator() !== '');
-        // return instructions;
     }
 }
