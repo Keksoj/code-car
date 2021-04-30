@@ -1,36 +1,66 @@
 body {
-    background-color: aquamarine;
+    background-color: #3a3a45;
+    margin: 0px;
+}
+nav{
+    height: 50px;
+    background-color: lightgray;
+    padding: 5px;
+}
+nav div{
+    height: 100%;
+    justify-content: center;
+}
+h1{
+    margin: 0px;
+    font-weight: normal;
+}
+.col{
+    display: flex;
+    flex-direction: column;
 }
 .flex-container {
     display: flex;
-    flex-direction: row;
     justify-content: space-around;
     align-items: center; /* horizontal alignment */
     align-content: space-around; /* vertical alignment */
     flex-wrap: wrap;
 }
-.map {
-    width: 400px;
+.card {
+    background-color: #9f9eac;
+    padding: 20px;
+    border-radius: 5px;
+    width: 40%;
+    min-width: 450px;
+    height: 450px;
+    margin: 10px auto;
 }
-
+.cardHeader {
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+#canvas {
+    height: 300px;
+    width: 300px;
+    margin: 0px auto;
+}
+button {
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+}
 #textform {
+    height: 100%;
     display: grid;
-}
-
-.textbox {
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    margin: 1.5em;
-    padding: 1.5em;
-    display: grid;
-    /* width: 40%; */
+    grid-template-columns: 1% 1fr 1%;
+    grid-template-rows: 1% 1fr 1% 50px 1%;
 }
 #instructions {
-    width: 400px;
-
-    height: 200px;
+    grid-area: 2 / 2 / 3 / 3;
     text-align: left;
     /* overflow: auto; */
     word-wrap: break-word;
+}
+#envoyerText{
+    grid-area: 4 / 2 / 5 / 3;
 }

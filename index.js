@@ -6,7 +6,6 @@ import ParserV2 from './src/Jacklang/Parserv2.js';
 import instructionSet from './src/Jacklang/jacklang.js';
 
 var canvas = document.getElementById('canvas');
-var cellSize = 10; // pixels
 
 canvas.width = 300;
 canvas.height = 300;
