@@ -53,7 +53,7 @@ export default class Game extends Drawable {
      */
     checkWin() {
         const cell = this.map.cells[this.car.position.x][this.car.position.y];
-        console.log(cell);
+        // console.log(cell);
         if (cell.type === 'endpoint') {
             console.log('congrats');
             this.isWon = true;
