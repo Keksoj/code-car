@@ -36,12 +36,11 @@ export default class Car extends Drawable {
      * @param {Orientation} orientation The car orientation.
      * @param {Map} map The map where the car is.
      */
-    constructor(position, orientation, map) {
+    constructor(position, orientation) {
         super();
 
         this.position = position;
         this.orientation = ORIENTATIONS.indexOf(orientation);
-        this.map = map;
         this.instructions = [];
         console.log(this.position);
     }
@@ -173,10 +172,11 @@ export default class Car extends Drawable {
 
     /**
      * @param {CanvasRenderingContext2D} ctx The context.
+     * @param {Map}
      */
-    draw(ctx) {
-        var triangleWidth = this.map.settings.cellSize / 2;
-        var triangleHeight = this.map.settings.cellSize / 1.2;
+    draw(ctx, map) {
+        var triangleWidth = map.settings.cellSize / 2;
+        var triangleHeight = map.settings.cellSize / 1.2;
 
         var originY = triangleHeight / 2;
         var originX = triangleWidth / 2;
@@ -186,8 +186,8 @@ export default class Car extends Drawable {
         ctx.fillStyle = 'rgb(0, 0, 0)';
 
         ctx.translate(
-            this.position.x * this.map.settings.cellSize + this.map.settings.cellSize / 2,
-            this.position.y * this.map.settings.cellSize + this.map.settings.cellSize / 2
+            this.position.x * map.settings.cellSize + map.settings.cellSize / 2,
+            this.position.y * map.settings.cellSize + map.settings.cellSize / 2
         );
 
         ctx.rotate(this.orientation * (Math.PI / 2));

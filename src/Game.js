@@ -58,17 +58,19 @@ export default class Game extends Drawable {
             }
 
             // game over
-            if (this.car.collisionOccurs(this.map)) {
-                // game over
-                this.announceGameOver();
-                this.isOver = true;
-            }
+            this.checkGameOver();
 
             // game win
-            if (this.checkWin()) {
-                this.announceWin();
-                this.isWon = true;
-            }
+            this.checkWin();
+        }
+    }
+
+    /**
+     * Check wether the car hits anything
+     */
+    checkGameOver() {
+        if (this.car.collisionOccurs(this.map)) {
+            this.isOver = true;
         }
     }
 
@@ -83,7 +85,6 @@ export default class Game extends Drawable {
             console.log('congrats');
             this.isWon = true;
         }
-        true
     }
 
     /**
@@ -116,7 +117,7 @@ export default class Game extends Drawable {
         ctx.fillStyle = '#ffffff';
 
         this.map.draw(ctx);
-        this.car.draw(ctx);
+        this.car.draw(ctx, this.map);
 
         if (this.isWon) {
             this.ctx.fillStyle = '#00ff00';
@@ -137,6 +138,24 @@ export default class Game extends Drawable {
             );
             this.ctx.font = '15px monospace';
             this.ctx.fillText('You won', this.canvas.width / 2, this.canvas.height / 2);
+            this.ctx.fill();
+        }
+
+        if (this.isOver) {
+            this.ctx.fillStyle = 'red';
+            this.ctx.fillRect(
+                2 * this.cellSize,
+                2 * this.cellSize,
+                (this.map.cellAmount.x - 4) * this.cellSize,
+                (this.map.cellAmount.y - 4) * this.cellSize
+            );
+            this.ctx.fill();
+            this.ctx.font = '30px monospace';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillStyle = 'white';
+            this.ctx.fillText('Game over', this.canvas.width / 2, this.canvas.height / 2 - 40);
+            this.ctx.font = '15px monospace';
+            this.ctx.fillText('You lose', this.canvas.width / 2, this.canvas.height / 2);
             this.ctx.fill();
         }
 
