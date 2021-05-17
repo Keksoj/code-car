@@ -137,9 +137,9 @@ export default class Car extends Drawable {
     collisionOccurs(map) {
         // wall collisions
         if (
-            this.position.x > map.cellAmount.x ||
+            this.position.x >= map.cellAmount.x ||
             this.position.x < 0 ||
-            this.position.y > map.cellAmount.y ||
+            this.position.y >= map.cellAmount.y ||
             this.position.y < 0
         ) {
             console.log(
