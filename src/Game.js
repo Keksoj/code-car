@@ -52,18 +52,18 @@ export default class Game extends Drawable {
     }
 
     tick() {
-        if (!this.isWon || !this.isOver) {
+        if (!this.isWon && !this.isOver) {
             if (this.instructions.length > 0) {
                 this.car.executeOneInstruction(this.instructions.pop());
             }
 
             // game over
-            if (this.checkGameOver()) {
-                return;
-            };
-
-            // game win
-            this.checkWin();
+            this.checkGameOver();
+            if(!this.isOver) {
+                // game win
+                this.checkWin();
+            }
+            
             console.log(this.isOver, this.isWon);
         }
     }
@@ -74,9 +74,7 @@ export default class Game extends Drawable {
     checkGameOver() {
         if (this.car.collisionOccurs(this.map)) {
             this.isOver = true;
-            return true;
         }
-        return false;
     }
 
 
