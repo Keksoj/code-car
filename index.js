@@ -25,7 +25,7 @@ function onGameStart(game) {
         const rawInstructions = event.target.instructions.value;
         var executableInstructions = parser.parse(rawInstructions);
         console.log(executableInstructions);
-        game.car.setInstructions(executableInstructions);
+        game.setInstructions(executableInstructions);
     };
 }
 
@@ -41,8 +41,9 @@ function onGameUpdate(game) {
         // console.log(game.time - game.lastTime);
         // console.log(game.car.instructions);
         time_total = 0;
-        game.car.executeOneInstruction();
-        game.checkWin();
+        game.tick();
+        // game.car.executeOneInstruction();
+        // game.checkWin();
     }
 }
 

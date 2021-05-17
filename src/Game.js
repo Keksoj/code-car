@@ -22,8 +22,11 @@ export default class Game extends Drawable {
         this.map = new Map(canvas, { obstacleRatio: 0.3, cellSize: this.cellSize });
         this.car = new Car(this.map.startPoint, 'N', this.map);
         this.lastTime = 0;
+        this.instructions = [];
+
         this.time = 0;
         this.isWon = false;
+        this.isOver = false;
 
         const defaultCallback = (_) => {
             /* ... */
@@ -48,6 +51,27 @@ export default class Game extends Drawable {
         requestAnimationFrame((time) => this.gameLoop(time));
     }
 
+    tick() {
+        if (!this.isWon || !this.isOver) {
+            if (this.instructions.length > 0) {
+                this.car.executeOneInstruction(this.instructions.pop());
+            }
+
+            // game over
+            if (this.car.collisionOccurs(this.map)) {
+                // game over
+                this.announceGameOver();
+                this.isOver = true;
+            }
+
+            // game win
+            if (this.checkWin()) {
+                this.announceWin();
+                this.isWon = true;
+            }
+        }
+    }
+
     /**
      * Checks for a win
      */
@@ -55,13 +79,19 @@ export default class Game extends Drawable {
         const cell = this.map.cells[this.car.position.x][this.car.position.y];
         // console.log(cell);
         if (cell.type === 'endpoint') {
+            // afficher CONGRATULATIONS
             console.log('congrats');
             this.isWon = true;
         }
+        true
     }
 
-    gameOver() {
-        
+    /**
+     *
+     * @param {[String]} instructions a list of english commands
+     */
+    setInstructions(instructions) {
+        this.instructions = instructions.reverse();
     }
 
     /**
@@ -100,7 +130,11 @@ export default class Game extends Drawable {
             this.ctx.font = '30px monospace';
             this.ctx.textAlign = 'center';
             this.ctx.fillStyle = 'white';
-            this.ctx.fillText('Congratulations', this.canvas.width / 2, this.canvas.height / 2 - 40);
+            this.ctx.fillText(
+                'Congratulations',
+                this.canvas.width / 2,
+                this.canvas.height / 2 - 40
+            );
             this.ctx.font = '15px monospace';
             this.ctx.fillText('You won', this.canvas.width / 2, this.canvas.height / 2);
             this.ctx.fill();
