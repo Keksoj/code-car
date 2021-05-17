@@ -22,8 +22,11 @@ export default class Game extends Drawable {
         this.map = new Map(canvas, { obstacleRatio: 0.3, cellSize: this.cellSize });
         this.car = new Car(this.map.startPoint, 'N', this.map);
         this.lastTime = 0;
+        this.instructions = [];
+
         this.time = 0;
         this.isWon = false;
+        this.isOver = false;
 
         const defaultCallback = (_) => {
             /* ... */
@@ -48,6 +51,35 @@ export default class Game extends Drawable {
         requestAnimationFrame((time) => this.gameLoop(time));
     }
 
+    tick() {
+        if (!this.isWon || !this.isOver) {
+            if (this.instructions.length > 0) {
+                this.car.executeOneInstruction(this.instructions.pop());
+            }
+
+            // game over
+            if (this.checkGameOver()) {
+                return;
+            };
+
+            // game win
+            this.checkWin();
+            console.log(this.isOver, this.isWon);
+        }
+    }
+
+    /**
+     * Check wether the car hits anything
+     */
+    checkGameOver() {
+        if (this.car.collisionOccurs(this.map)) {
+            this.isOver = true;
+            return true;
+        }
+        return false;
+    }
+
+
     /**
      * Checks for a win
      */
@@ -55,13 +87,18 @@ export default class Game extends Drawable {
         const cell = this.map.cells[this.car.position.x][this.car.position.y];
         // console.log(cell);
         if (cell.type === 'endpoint') {
+            // afficher CONGRATULATIONS
             console.log('congrats');
             this.isWon = true;
         }
     }
 
-    gameOver() {
-        
+    /**
+     *
+     * @param {[String]} instructions a list of english commands
+     */
+    setInstructions(instructions) {
+        this.instructions = instructions.reverse();
     }
 
     /**
@@ -86,7 +123,7 @@ export default class Game extends Drawable {
         ctx.fillStyle = '#ffffff';
 
         this.map.draw(ctx);
-        this.car.draw(ctx);
+        this.car.draw(ctx, this.map);
 
         if (this.isWon) {
             this.ctx.fillStyle = '#00ff00';
@@ -100,9 +137,31 @@ export default class Game extends Drawable {
             this.ctx.font = '30px monospace';
             this.ctx.textAlign = 'center';
             this.ctx.fillStyle = 'white';
-            this.ctx.fillText('Congratulations', this.canvas.width / 2, this.canvas.height / 2 - 40);
+            this.ctx.fillText(
+                'Congratulations',
+                this.canvas.width / 2,
+                this.canvas.height / 2 - 40
+            );
             this.ctx.font = '15px monospace';
             this.ctx.fillText('You won', this.canvas.width / 2, this.canvas.height / 2);
+            this.ctx.fill();
+        }
+
+        if (this.isOver) {
+            this.ctx.fillStyle = 'red';
+            this.ctx.fillRect(
+                2 * this.cellSize,
+                2 * this.cellSize,
+                (this.map.cellAmount.x - 4) * this.cellSize,
+                (this.map.cellAmount.y - 4) * this.cellSize
+            );
+            this.ctx.fill();
+            this.ctx.font = '30px monospace';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillStyle = 'white';
+            this.ctx.fillText('Game over', this.canvas.width / 2, this.canvas.height / 2 - 40);
+            this.ctx.font = '15px monospace';
+            this.ctx.fillText('You lose', this.canvas.width / 2, this.canvas.height / 2);
             this.ctx.fill();
         }
 

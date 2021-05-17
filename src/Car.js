@@ -36,13 +36,13 @@ export default class Car extends Drawable {
      * @param {Orientation} orientation The car orientation.
      * @param {Map} map The map where the car is.
      */
-    constructor(position, orientation, map) {
+    constructor(position, orientation) {
         super();
 
         this.position = position;
         this.orientation = ORIENTATIONS.indexOf(orientation);
-        this.map = map;
         this.instructions = [];
+        console.log(this.position);
     }
 
     /**
@@ -55,25 +55,27 @@ export default class Car extends Drawable {
 
     /**
      * Execute the instruction queue
+     * @param {String} instruction 'forward, left…'
      */
-    executeOneInstruction() {
-        if (this.instructions.length > 0) {
-            console.log(this.instructions[0]);
-            switch (this.instructions.pop()) {
-                case 'forward':
-                    this.moveForward(1);
-                    break;
-                case 'backward':
-                    this.moveForward(-1);
-                    break;
-                case 'left':
-                    this.turnLeft();
-                    break;
-                case 'right':
-                    this.turnRight();
-                    break;
-            }
+    executeOneInstruction(instruction) {
+        // if (this.instructions.length > 0) {
+        // console.log(this.instructions[0]);
+        switch (instruction) {
+            // this.instructions.pop()
+            case 'forward':
+                this.moveForward(1);
+                break;
+            case 'backward':
+                this.moveForward(-1);
+                break;
+            case 'left':
+                this.turnLeft();
+                break;
+            case 'right':
+                this.turnRight();
+                break;
         }
+        // }
     }
 
     /**
@@ -98,11 +100,8 @@ export default class Car extends Drawable {
     moveForward(driveDistance) {
         const futurePosition = this.computeFuturePosition(driveDistance);
         console.log(this.position, futurePosition);
-        if (this.collisionOccurs(futurePosition)) {
-            console.log('woops collision');
-        } else {
-            this.position = futurePosition;
-        }
+
+        this.position = futurePosition;
     }
 
     /**
@@ -112,6 +111,7 @@ export default class Car extends Drawable {
      */
     computeFuturePosition(driveDistance) {
         var futurePosition = this.position;
+        console.log(futurePosition);
         switch (this.orientation) {
             case 0:
                 futurePosition.y = this.position.y - driveDistance;
@@ -131,22 +131,25 @@ export default class Car extends Drawable {
 
     /**
      * detect collisions
-     * @param {Number2} the future position to check collisions for
+     * @param {Map}
      * @returns {boolean}
      */
-    collisionOccurs(futurePosition) {
+    collisionOccurs(map) {
+        // wall collisions
         if (
-            futurePosition.x > this.map.cellAmount.x ||
-            futurePosition.x < 0 ||
-            futurePosition.y > this.map.cellAmount.y ||
-            futurePosition.y < 0
+            this.position.x > map.cellAmount.x ||
+            this.position.x < 0 ||
+            this.position.y > map.cellAmount.y ||
+            this.position.y < 0
         ) {
             console.log(
                 'Flash info : un accident est survenu sur le périphérique Nord de Canvas-city. Une candidature est morte sur le coup.'
             );
             return true;
         }
-        const goalCell = this.map.cells[futurePosition.x][futurePosition.y];
+
+        // obstacle collision
+        const goalCell = map.cells[this.position.x][this.position.y];
         if (goalCell.type == 'obstacle') {
             console.log('You hit a block dumbass');
             return true;
@@ -169,10 +172,11 @@ export default class Car extends Drawable {
 
     /**
      * @param {CanvasRenderingContext2D} ctx The context.
+     * @param {Map}
      */
-    draw(ctx) {
-        var triangleWidth = this.map.settings.cellSize / 2;
-        var triangleHeight = this.map.settings.cellSize / 1.2;
+    draw(ctx, map) {
+        var triangleWidth = map.settings.cellSize / 2;
+        var triangleHeight = map.settings.cellSize / 1.2;
 
         var originY = triangleHeight / 2;
         var originX = triangleWidth / 2;
@@ -182,8 +186,8 @@ export default class Car extends Drawable {
         ctx.fillStyle = 'rgb(0, 0, 0)';
 
         ctx.translate(
-            this.position.x * this.map.settings.cellSize + this.map.settings.cellSize / 2,
-            this.position.y * this.map.settings.cellSize + this.map.settings.cellSize / 2
+            this.position.x * map.settings.cellSize + map.settings.cellSize / 2,
+            this.position.y * map.settings.cellSize + map.settings.cellSize / 2
         );
 
         ctx.rotate(this.orientation * (Math.PI / 2));
