@@ -58,10 +58,13 @@ export default class Game extends Drawable {
             }
 
             // game over
-            this.checkGameOver();
+            if (this.checkGameOver()) {
+                return;
+            };
 
             // game win
             this.checkWin();
+            console.log(this.isOver, this.isWon);
         }
     }
 
@@ -71,8 +74,11 @@ export default class Game extends Drawable {
     checkGameOver() {
         if (this.car.collisionOccurs(this.map)) {
             this.isOver = true;
+            return true;
         }
+        return false;
     }
+
 
     /**
      * Checks for a win
