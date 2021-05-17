@@ -47,6 +47,7 @@ export default class Game extends Drawable {
         this.car = new Car(this.map.startPoint, 'N', this.map);
         this.isWon = false;
         this.isOver = false;
+        this.instructions = [];
     }
 
     gameLoop(time) {
