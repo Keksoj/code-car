@@ -41,6 +41,14 @@ export default class Game extends Drawable {
         this.gameLoop(0);
     }
 
+    reset()
+    {
+        this.map = new Map(canvas, { obstacleRatio: 0.3, cellSize: this.cellSize });
+        this.car = new Car(this.map.startPoint, 'N', this.map);
+        this.isWon = false;
+        this.isOver = false;
+    }
+
     gameLoop(time) {
         this.time = time;
 
