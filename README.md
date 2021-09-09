@@ -1,6 +1,5 @@
 # Code-Car
 
-Connaissez-vous le terme *gamification* ?  
 Nous voulons *gamifier* les tests d'aptitude à l'école 404. En faire des jeux.
 
 Pluôt que de demander aux futurs étudiants de renverser une liste chaînée en python, nous préférons leur faire coder des instructions pour guider une petite voiture sur un damier.
